@@ -1,0 +1,102 @@
+﻿@{
+    ViewData["Title"] = "Profile Change Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Profila rediģēšana</h1>
+</div>
+<form>
+    <div class="container">
+        <div class="row">
+            <div class="form-group col col-sm-12">
+                <label>Vārds</label>
+            </div>
+            <div class="form-group col col-sm-12">
+                <input type="text" name="Vards" style="width: 525px" value="Andrejs" />
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="form-group col col-sm-12">
+                <label>Uzvārds</label>
+            </div>
+            <div class="form-group col col-sm-12">
+                <input type="text" name="Uzvards" style="width: 525px" value="Frančuks" />
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="form-group col col-sm-12">
+                <label>E-pasta adrese:</label>
+            </div>
+            <div class="form-group col col-sm-12">
+                <input type="text" name="Epasts" style="width: 525px" value="andrejsfranc@gmail.com" />
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="form-group col col-sm-12">
+                <label>Dzimums (vīrietis♂, sieviete♀):</label>
+            </div>
+            <div class="form-group col col-sm-12">
+                <input type="text" name="DzimumsVS" style="width: 525px" value="Vīrietis" />
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="form-group col col-sm-12">
+                <label>Dzimums (psiholoģiskais):</label>
+            </div>
+            <div class="form-group col col-sm-12">
+                <input type="text" name="DzimumsP" style="width: 525px" value="Vīrietis" />
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="form-group col col-sm-12">
+                <label>Personīgas īpašības:</label>
+            </div>
+            <div class="form-group col col-sm-12">
+                <input type="text" name="PersonigasIpasibas" style="width: 525px" value="Draudzīgs, pretimnākošs, laipns" />
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="form-group col col-sm-12">
+                <label>Hobiji, Intereses, Vaļasprieki</label>
+            </div>
+            <div class="form-group col col-sm-12">
+                <input type="text" name="Hobiji" style="width: 525px" value="Datorspēles, futbols, šahs, pastaigas ar draugiem"/>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="form-group col col-sm-3">
+                <button type="submit" class="btn btn-primary btn-full-space testB">Iziet</button>
+            </div>
+            <div class="form-group col col-sm-3">
+                <button type="submit" class="btn btn-primary btn-full-space testA">Saglabāt</button>
+            </div>
+        </div>
+    </div>
+
+</form>
+<style>
+    .testA {
+        background-color: #4CAF50 !important;
+    }
+    .testB {
+        background-color: #8B0000 !important;
+    }
+
+    .btn-full-space {
+        width: 70%;
+    }
+</style>
