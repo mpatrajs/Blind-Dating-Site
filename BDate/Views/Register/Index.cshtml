@@ -1,0 +1,32 @@
+﻿@{
+}
+<div class="container">
+<form asp-controller="Register" asp-action="Index" method="post">
+  <div class="mb-3">
+    <label for="InputName" class="form-label">Vārds</label>
+    <input name="name" type="text" class="form-control" id="InputName" required>
+  </div>
+  <div class="mb-3">
+    <label for="InputSurname" class="form-label">Uzvārds</label>
+    <input name="surname" type="text" class="form-control" id="InputSurname" required>
+  </div>
+  <div class="mb-3">
+    <label for="InputEmail" class="form-label">E-pasts</label>
+    <input name="email" type="email" class="form-control" id="InputEmail" required>
+  </div>
+  <div class="mb-3">
+    <label for="InputBirthDate" class="form-label">E-pasts</label>
+    <input name="bdate" type="date" max="@(DateTime.Now.ToString("yyyy-MM-dd"))" class="form-control" id="InputBirthDate" required>
+  </div>
+  <div class="mb-3">
+    <label for="InputPassword" class="form-label">Parole</label>
+    <input name="pass" type="password" class="form-control" id="InputPassword" required>
+  </div>
+  <div class="mb-3">
+    <label for="InputPasswordConfirm" class="form-label">Parole vēlreiz</label>
+    <input name="conf_pass" type="password" class="form-control" id="InputPasswordConfirm"required>
+  </div>
+  <button type="submit" class="shadow btn btn-primary btn-lg btn-block">Reģistrēties</button>
+</form>
+<p class="text-center mt-3">Vai jums jau ir konts? <a asp-controller="Login" asp-action="Index" class="link-primary">Pieslēgties</a></p>
+</div>

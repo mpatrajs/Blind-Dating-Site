@@ -8,19 +8,19 @@
     "net5.0": []
   },
   "packageFolders": {
-    "C:\\Users\\Макс\\.nuget\\packages\\": {}
+    "C:\\Users\\klimi\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Макс\\source\\repos\\BDate\\BDate\\BDate.csproj",
+      "projectUniqueName": "C:\\Users\\klimi\\Source\\Repos\\Blind-Dating-Site\\BDate\\BDate.csproj",
       "projectName": "BDate",
-      "projectPath": "C:\\Users\\Макс\\source\\repos\\BDate\\BDate\\BDate.csproj",
-      "packagesPath": "C:\\Users\\Макс\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Макс\\source\\repos\\BDate\\BDate\\obj\\",
+      "projectPath": "C:\\Users\\klimi\\Source\\Repos\\Blind-Dating-Site\\BDate\\BDate.csproj",
+      "packagesPath": "C:\\Users\\klimi\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\klimi\\Source\\Repos\\Blind-Dating-Site\\BDate\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Макс\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\klimi\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -63,7 +63,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
       }
     }
   }
