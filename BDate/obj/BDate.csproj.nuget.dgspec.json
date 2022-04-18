@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Макс\\source\\repos\\BDate\\BDate\\BDate.csproj": {}
+    "C:\\Users\\kalma\\Desktop\\sema\\Blind-Dating-Site\\BDate\\BDate.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Макс\\source\\repos\\BDate\\BDate\\BDate.csproj": {
+    "C:\\Users\\kalma\\Desktop\\sema\\Blind-Dating-Site\\BDate\\BDate.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Макс\\source\\repos\\BDate\\BDate\\BDate.csproj",
+        "projectUniqueName": "C:\\Users\\kalma\\Desktop\\sema\\Blind-Dating-Site\\BDate\\BDate.csproj",
         "projectName": "BDate",
-        "projectPath": "C:\\Users\\Макс\\source\\repos\\BDate\\BDate\\BDate.csproj",
-        "packagesPath": "C:\\Users\\Макс\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Макс\\source\\repos\\BDate\\BDate\\obj\\",
+        "projectPath": "C:\\Users\\kalma\\Desktop\\sema\\Blind-Dating-Site\\BDate\\BDate.csproj",
+        "packagesPath": "C:\\Users\\kalma\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\kalma\\Desktop\\sema\\Blind-Dating-Site\\BDate\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Макс\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\kalma\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -39,6 +39,30 @@
       "frameworks": {
         "net5.0": {
           "targetAlias": "net5.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[5.0.16, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.0.16, )"
+            },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[5.0.2, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[5.0.2, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL.Design": {
+              "target": "Package",
+              "version": "[1.1.0, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -57,7 +81,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.405\\RuntimeIdentifierGraph.json"
         }
       }
     }
