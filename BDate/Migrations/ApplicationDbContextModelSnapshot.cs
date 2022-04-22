@@ -320,6 +320,7 @@ namespace BDate.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
 
             modelBuilder.Entity("BDate.Models.UserSetting", b =>
                 {
