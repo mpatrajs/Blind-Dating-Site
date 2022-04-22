@@ -42,6 +42,16 @@ namespace BDate
                 options.Filters.Add(new AuthorizeFilter());
             });
 
+            //Session settings
+            services.ConfigureApplicationCookie(options =>
+            {
+                //other options...
+                options.Cookie.Name = ".AspNetCore.Identity.Application";
+                options.ExpireTimeSpan = TimeSpan.FromSeconds(20);
+                options.SlidingExpiration = true;
+            });
+
+
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
