@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace BDate
 {
@@ -33,6 +34,13 @@ namespace BDate
             services.AddDefaultIdentity<IdentityUser>(options =>
             options.SignIn.RequireConfirmedAccount = true)
            .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            //IF user not logged in returns to login page
+            services.AddMvc(options =>
+            {
+                // This pushes users to login if not authenticated
+                options.Filters.Add(new AuthorizeFilter());
+            });
 
             services.AddControllersWithViews();
             services.AddRazorPages();
