@@ -24,5 +24,6 @@ namespace BDate.Data
         public DbSet<Test> Tests { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserSetting> UserSettings { get; set; }
+        public DbSet<Profile> Profiles { get; set; }
     }
 }

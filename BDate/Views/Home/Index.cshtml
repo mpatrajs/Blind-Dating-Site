@@ -3,6 +3,14 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
+    <h1 class="display-4">Welcome Home/controller</h1>
+    <h1>@ViewBag.urlId</h1>
+    <h1>@ViewBag.userId</h1>
+    <h1>@ViewBag.userName</h1>
+    <h1>@ViewBag.IsActive</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <p>!!! HERE MUST BE FORM from Profile table ONLY AFTER filling it user is AVAILABLE TO SUBMIT IT !!!</p>
+    <form method="post">
+        <input type="submit" name="submit" value="Submit" />
+    </form>
 </div>

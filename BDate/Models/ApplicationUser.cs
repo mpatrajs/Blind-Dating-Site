@@ -8,6 +8,7 @@ namespace BDate.Models
 {
     public class ApplicationUser : IdentityUser
     {
-
+        public bool IsActive { get; set; }
+        public virtual Profile Profile { get; set; }
     }
 }
