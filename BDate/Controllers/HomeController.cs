@@ -22,36 +22,35 @@ namespace BDate.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index(string Id)
+        public IActionResult Index()
         {
             // ГОВНОКОД, НО ЕСТЬ БАЗОВАЯ ЛОГИКА
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
             var userName = User.FindFirstValue(ClaimTypes.Name); // will give the user's userName
             var userIsActive = _userManager.FindByIdAsync(userId).Result.IsActive;
 
-            ViewBag.urlId = Id;
+            //ViewBag.urlId = Id;
             ViewBag.userId = userId;
             ViewBag.userName = userName;
             ViewBag.IsActive = userIsActive;
+            // ВЕРНУТЬ СЛЕДУЮЩУЮ СТРОКУ в if (userIsActive == false), ЕСЛИ ХОЧЕТСЯ ПОСМОТРЕТЬ НА ViewBag-и >-<
+            // return View();
+
 
             if (userIsActive == false)
             {
                 // if isActive == false
-                // fill Profile table
-                // Change attribute and return back to Home/Index
-                // ЗДЕСЬ НАДО ЗАСЕТИТЬ ID для PROFILE и Setting
-                return View();
+                // return View();
+                return RedirectToAction("Create", "Profiles", new { area = "" });
             }
             else
             {
-                // else {view with users Users}
                 // isActive = true
-                // Give role => ActiveUser
                 // return list of profiles
-                return View("Privacy");
+                //return View("Privacy");
+                return RedirectToAction("Index", "Profiles", new { area = "" });
                 //return RedirectToAction("Index","Users");
-            }
-            //return View();
+            } 
         }
 
         //When SUMBIT button is clicked
