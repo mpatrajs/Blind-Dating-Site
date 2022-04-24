@@ -1,4 +1,4 @@
-﻿using BDate.Models;
+using BDate.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -21,5 +21,6 @@ namespace BDate.Data
         public DbSet<Test> Tests { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserToCategories> UserToCategories { get; set; }
+        public DbSet<UserSetting> UserSettings { get; set; }
     }
 }
