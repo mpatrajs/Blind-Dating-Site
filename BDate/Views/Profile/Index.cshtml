@@ -1,7 +1,5 @@
 ﻿
-@{
-    ViewData["Title"] = "Index";
-}
+@{ ViewData["Title"] = "Index"; }
 
 <h1>Profils</h1>
 <form>
@@ -19,26 +17,39 @@
         </div>
         <div class="col-8">
             <div class="tab-content" id="nav-tabContent">
-                <div class="tab-pane fade show active" id="list-Vards" role="tabpanel" aria-labelledby="list-Vards-list">Pavels</div>
-                <div class="tab-pane fade" id="list-Uzvards" role="tabpanel" aria-labelledby="list-Uzvards-list">Ozols</div>
-                <div class="tab-pane fade" id="list-Pasts" role="tabpanel" aria-labelledby="list-Pasts-list">PavelsOzols@gmail.com</div>
-                <div class="tab-pane fade" id="list-Dzimums" role="tabpanel" aria-labelledby="list-Dzimums-list">Vīrietis</div>
-                <div class="tab-pane fade" id="list-Dzimums2" role="tabpanel" aria-labelledby="list-Dzimums2-list">Vīrietis</div>
-                <div class="tab-pane fade" id="list-ipasibas" role="tabpanel" aria-labelledby="list-ipasibas-list">Draudzīgs, laipns</div>
-                <div class="tab-pane fade" id="list-Hobiji" role="tabpanel" aria-labelledby="list-Hobiji-list">Datorspēles, futbols, šahs, pastaigas ar draugiem</div>
+                <div class="tab-pane fade show active" id="list-Vards" role="tabpanel" aria-labelledby="list-Vards-list">
+                    <input type="text" readonly="readonly" name="Vards" style="width: 525px" value="Andrejs" />
+                </div>
+                <div class="tab-pane fade" id="list-Uzvards" role="tabpanel" aria-labelledby="list-Uzvards-list">
+                    <input type="text" readonly="readonly" name="Uzvards" style="width: 525px" value="Frančuks" />
+                </div>
+                <div class="tab-pane fade" id="list-Pasts" role="tabpanel" aria-labelledby="list-Pasts-list">
+                    <input type="text" readonly="readonly" name="Pasts" style="width: 525px" value="andrejsfranc@gmail.com" />
+                </div>
+                <div class="tab-pane fade" id="list-Dzimums" role="tabpanel" aria-labelledby="list-Dzimums-list">
+                    <input type="text" readonly="readonly" name="Dzimums" style="width: 525px" value="Vīrietis" />
+                </div>
+                <div class="tab-pane fade" id="list-Dzimums2" role="tabpanel" aria-labelledby="list-Dzimums2-list">
+                    <input type="text" readonly="readonly" name="Dzimums2" style="width: 525px" value="Vīrietis" />
+                </div>
+                <div class="tab-pane fade" id="list-ipasibas" role="tabpanel" aria-labelledby="list-ipasibas-list">
+                    <input type="text" readonly="readonly" name="ipasibas" style="width: 525px" value="Draudzīgs, pretimnākošs, laipns" />
+                </div>
+                <div class="tab-pane fade" id="list-Hobiji" role="tabpanel" aria-labelledby="list-Hobiji-list">
+                    <input type="text" onkeypress="return false;" name="Hobiji" style="width: 525px" value="Datorspēles, futbols, šahs, pastaigas ar draugiem" />
+                </div>
             </div>
         </div>
     </div>
     <div class="mt-3">
-    <button type="button" class="btn btn-primary">Iziet</button>
-    <button type="button" class="btn btn-primary">Mainīt</button>
-    <button type="button" class="btn btn-primary">Meklēt</button>
-        </div>
+        <button type="button" class="btn btn-primary">Iziet</button>
+        <button type="button" class="btn btn-primary">Mainīt</button>
+        <button type="button" class="btn btn-primary">Meklēt</button>
+    </div>
 </form>
 
 <style>
     .form-control {
         background-color: #E8E8E8;
     }
-
 </style>
