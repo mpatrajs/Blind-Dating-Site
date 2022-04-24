@@ -22,9 +22,12 @@ namespace BDate.Data
         }
         //Here we are linking fresh Entity to Table in DB that is going to be named Tests 
         public DbSet<Test> Tests { get; set; }
-        public DbSet<User> Users { get; set; }
+        //public DbSet<User> Users { get; set; }
         public DbSet<UserToCategories> UserToCategories { get; set; }
         public DbSet<UserSetting> UserSettings { get; set; }
         public DbSet<Profile> Profiles { get; set; }
+        public DbSet<Personality> Personalities { get; set; }
+        public DbSet<Hobby> Hobbies { get; set; }
+        public DbSet<Setting> Settings { get; set; }
     }
 }

@@ -39,6 +39,7 @@ namespace BDate.Controllers
                 // if isActive == false
                 // fill Profile table
                 // Change attribute and return back to Home/Index
+                // ЗДЕСЬ НАДО ЗАСЕТИТЬ ID для PROFILE и Setting
                 return View();
             }
             else
@@ -48,6 +49,7 @@ namespace BDate.Controllers
                 // Give role => ActiveUser
                 // return list of profiles
                 return View("Privacy");
+                //return RedirectToAction("Index","Users");
             }
             //return View();
         }
@@ -59,7 +61,7 @@ namespace BDate.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user = _userManager.FindByIdAsync(userId);
             user.Result.IsActive = true;
-
+            
             await _userManager.UpdateAsync(await user);
             //var result = await _userManager.UpdateAsync(user);
             return RedirectToAction("Index", "Home");
