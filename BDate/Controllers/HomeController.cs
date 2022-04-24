@@ -1,10 +1,12 @@
 ﻿using BDate.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace BDate.Controllers
@@ -12,15 +14,55 @@ namespace BDate.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public HomeController(ILogger<HomeController> logger, UserManager<ApplicationUser> userManager)
         {
             _logger = logger;
+            _userManager = userManager;
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        public IActionResult Index(string Id)
         {
-            return View();
+            // ГОВНОКОД, НО ЕСТЬ БАЗОВАЯ ЛОГИКА
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
+            var userName = User.FindFirstValue(ClaimTypes.Name); // will give the user's userName
+            var userIsActive = _userManager.FindByIdAsync(userId).Result.IsActive;
+
+            ViewBag.urlId = Id;
+            ViewBag.userId = userId;
+            ViewBag.userName = userName;
+            ViewBag.IsActive = userIsActive;
+
+            if (userIsActive == false)
+            {
+                // if isActive == false
+                // fill Profile table
+                // Change attribute and return back to Home/Index
+                return View();
+            }
+            else
+            {
+                // else {view with users Users}
+                // isActive = true
+                // Give role => ActiveUser
+                // return list of profiles
+                return View("Privacy");
+            }
+            //return View();
+        }
+
+        //When SUMBIT button is clicked
+        [HttpPost]
+        public async Task<IActionResult> IndexAsync()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = _userManager.FindByIdAsync(userId);
+            user.Result.IsActive = true;
+
+            await _userManager.UpdateAsync(await user);
+            //var result = await _userManager.UpdateAsync(user);
+            return RedirectToAction("Index", "Home");
         }
 
         public IActionResult Privacy()
