@@ -72,6 +72,24 @@ namespace BDate.Migrations
 
                     b.ToTable("Users");
                 });
+
+            modelBuilder.Entity("BDate.Models.UserSetting", b =>
+                {
+                    b.Property<long>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn);
+
+                    b.Property<string>("SettingName")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("SettingOn")
+                        .HasColumnType("boolean");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("UserSettings");
+                });
 #pragma warning restore 612, 618
         }
     }
