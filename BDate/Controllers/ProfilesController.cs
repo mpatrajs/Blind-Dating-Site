@@ -38,8 +38,10 @@ namespace BDate.Controllers
             }
 
             var profile = await _context.Profiles
+                .Include(p => p.Personalities)
                 .Include(p => p.ApplicationUser)
                 .FirstOrDefaultAsync(m => m.UserId == id);
+
             if (profile == null)
             {
                 return NotFound();
@@ -89,8 +91,20 @@ namespace BDate.Controllers
             {
                 return NotFound();
             }
+            var profile = _context.Profiles.Include(p => p.Personalities)
+            .SingleOrDefault(a => a.UserId == id);
 
-            var profile = await _context.Profiles.FindAsync(id);
+
+            //var profile = await _context.Profiles.FindAsync(id);
+
+
+            /*            var profile = await _context.Profiles
+                        .Include(p => p.Personalities)
+                        .Include(p => p.ApplicationUser)
+                        .FirstOrDefaultAsync(m => m.UserId == id);*/
+
+            var personalities = await _context.Personalities.ToListAsync();
+            ViewBag.Personality = personalities;
             if (profile == null)
             {
                 return NotFound();
@@ -104,7 +118,7 @@ namespace BDate.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("UserId,FirstName,LastName,DateOfBirth,Gender")] Profile profile)
+        public async Task<IActionResult> Edit(string id, [Bind("UserId,FirstName,LastName,DateOfBirth,Gender")] Profile profile, List<String> checkedValues)
         {
             if (id != profile.UserId)
             {
@@ -115,6 +129,18 @@ namespace BDate.Controllers
             {
                 try
                 {
+                   _context.Update(profile);
+                    var profileOnGet = _context.Profiles.Include(p => p.Personalities).SingleOrDefault(a => a.UserId == id);
+                    profileOnGet.Personalities.Clear();
+
+                    foreach (var checkedPersonality in checkedValues)
+                    {
+                        var personality = _context.Personalities
+                        .FirstOrDefaultAsync(m => m.PersonalityId == checkedPersonality);
+
+                        profile.Personalities.Add(await personality);
+                    }
+
                     _context.Update(profile);
                     await _context.SaveChangesAsync();
                 }
