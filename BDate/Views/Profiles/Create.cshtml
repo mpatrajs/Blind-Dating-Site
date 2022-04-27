@@ -13,10 +13,6 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-@*        <div class="form-group">
-            <label asp-for="UserId" class="control-label"></label>
-            <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
-        </div>*@
             <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>
                 <input asp-for="FirstName" class="form-control" />
@@ -35,8 +31,8 @@
             <div class="form-group">
                 <label asp-for="Gender" class="control-label"></label>
                 @Html.DropDownListFor(m => m.Gender, new List<SelectListItem>
-               { new SelectListItem{Text="Male", Value="Male"},
-                 new SelectListItem{Text="Female", Value="Female"}}, "Please select")
+                { new SelectListItem{Text="Male", Value="Male"},
+                new SelectListItem{Text="Female", Value="Female"}}, "Please select")
                 <span asp-validation-for="Gender" class="text-danger"></span>
             </div>
             <div class="form-group">

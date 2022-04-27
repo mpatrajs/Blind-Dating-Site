@@ -1,86 +1,48 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<BDate.Models.Setting>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<h1>Index</h1>
 
-<form>
-    <div class="container">
-        <div class="col d-flex justify-content-center">
-            <h1 class="display-4">Jūsu iestātījumi</h1>
-        </div>
-        <div class="col d-flex justify-content-center">
-            <div class="text-left mt-4">
-                <h3>Konfidencialtitāte</h3>
-            </div>
-        </div>
-        <div class="col d-flex justify-content-center">
-            <div class="custom-control custom-switch custom-switch-md">
-                <input type="checkbox" class="custom-control-input" id="customSwitch1">
-                <label class="custom-control-label align-middle h5 font-weight-normal" for="customSwitch1">Paslēpt vecumu</label>
-            </div>
-        </div>
-        <div class="col d-flex justify-content-center">
-            <div class="custom-control custom-switch custom-switch-md">
-                <input type="checkbox" class="custom-control-input" id="customSwitch2">
-                <label class="custom-control-label align-middle h5 font-weight-normal" for="customSwitch2">Paslēpt lokāciju</label>
-            </div>
-        </div>
-        <div class="col d-flex justify-content-center">
-            <div class="custom-control custom-switch custom-switch-md">
-                <input type="checkbox" class="custom-control-input" id="customSwitch3">
-                <label class="custom-control-label h5 font-weight-normal" for="customSwitch3">Paslēpt uzvārdu</label>
-            </div>
-        </div>
-        <div class="col d-flex justify-content-center">
-            <div class="text-left mt-4">
-                <h3>Preferences</h3>
-            </div>
-        </div>
-        <div class="col d-flex justify-content-center">
-            <div class="custom-control custom-switch custom-switch-md">
-                <input type="checkbox" class="custom-control-input" id="customSwitch4">
-                <label class="custom-control-label h5 font-weight-normal" for="customSwitch4">Meklēt globāli</label>
-            </div>
-        </div>
-        <div class="col d-flex justify-content-center">
-            <div class="btn-toolbar pl-0">
-                <button type="submit" class="btn btn-primary btn-lg mr-3">Iziet</button>
-                <button type="submit" class="btn btn-primary btn-lg">Saglabāt</button>
-            </div>
-        </div>
-    </div>
-</form>
-
-<style>
-    .form-control {
-        background-color: #E8E8E8;
-    }
-
-    .btn-full-space {
-        width: 100%;
-    }
-
-    /*
-    Custom-switch settings for md scale
-    */
-    .custom-switch.custom-switch-md .custom-control-label {
-        padding-left: 2rem;
-        padding-bottom: 1.5rem;
-    }
-
-    .custom-switch.custom-switch-md .custom-control-label::before {
-        height: 1.5rem;
-        width: calc(2rem + 0.75rem);
-        border-radius: 3rem;
-    }
-
-    .custom-switch.custom-switch-md .custom-control-label::after {
-        width: calc(1.5rem - 4px);
-        height: calc(1.5rem - 4px);
-        border-radius: calc(2rem - (1.5rem / 2));
-    }
-
-    .custom-switch.custom-switch-md .custom-control-input:checked ~ .custom-control-label::after {
-        transform: translateX(calc(1.5rem - 0.25rem));
-    }
-</style>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.isHiddenAge)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.isHiddenLastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Profile)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.isHiddenAge)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.isHiddenLastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Profile.UserId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.SettingId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.SettingId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.SettingId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

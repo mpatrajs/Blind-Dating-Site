@@ -99,6 +99,7 @@ namespace BDate.Controllers
             ViewBag.Personality = personalities;
             var hobbies = await _context.Hobbies.ToListAsync();
             ViewBag.Hobby = hobbies;
+
             if (profile == null)
             {
                 return NotFound();
@@ -157,7 +158,8 @@ namespace BDate.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Profiles", new { id = profile.UserId });
             }
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", profile.UserId);
             return View(profile);
