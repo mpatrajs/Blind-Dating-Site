@@ -41,7 +41,7 @@ namespace BDate.Controllers
             {
                 // if isActive == false
                 // return View();
-                return RedirectToAction("Create", "Profiles", new { area = "" });
+                return RedirectToAction("Create", "Profiles", new { id = userId} );
             }
             else
             {

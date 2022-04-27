@@ -52,9 +52,14 @@ namespace BDate.Controllers
         }
 
         // GET: Profiles/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var personalities = await _context.Personalities.ToListAsync();
+            ViewBag.Personality = personalities;
+            var hobbies = await _context.Hobbies.ToListAsync();
+            ViewBag.Hobby = hobbies;
             ViewData["UserId"] = new SelectList(_context.Users.Where(u => u.Id == userId), "Id", "Id");
             return View();
         }
@@ -64,7 +69,7 @@ namespace BDate.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserId,FirstName,LastName,DateOfBirth,Gender")] Profile profile)
+        public async Task<IActionResult> Create([Bind("UserId,FirstName,LastName,DateOfBirth,Gender")] Profile profile, List<String> checkedPersonalityValues, List<String> checkedHobbyValues)
         {
             if (ModelState.IsValid)
             {
@@ -74,12 +79,40 @@ namespace BDate.Controllers
                 _context.Add(profile);
                 await _context.SaveChangesAsync();
 
+                foreach (var checkedPersonality in checkedPersonalityValues)
+                {
+                    var personality = _context.Personalities
+                    .FirstOrDefaultAsync(m => m.PersonalityId == checkedPersonality);
+
+                    profile.Personalities.Add(await personality);
+                }
+
+                foreach (var checkedHobby in checkedHobbyValues)
+                {
+                    var hobby = _context.Hobbies
+                    .FirstOrDefaultAsync(m => m.HobbyId == checkedHobby);
+
+                    profile.Hobbies.Add(await hobby);
+                }
+
                 //Changing current user`s isActive field to true (AspNetUsers table)
                 var user = _userManager.FindByIdAsync(userId);
                 user.Result.IsActive = true;
                 await _userManager.UpdateAsync(await user);
+                //Add one to one with Setting
+                var setting = new Setting
+                {
+                    SettingId = userId,
+                    isHiddenAge = false,
+                    isHiddenLastName = false
+                };
+                _context.Add(setting);
+                await _context.SaveChangesAsync();
 
-                return RedirectToAction(nameof(Index));
+                _context.Update(profile);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Details", "Profiles", new { id = profile.UserId });
+                //return RedirectToAction(nameof(Index));
             }
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", profile.UserId);
             return View(profile);
