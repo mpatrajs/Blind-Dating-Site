@@ -118,7 +118,7 @@ namespace BDate.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("UserId,FirstName,LastName,DateOfBirth,Gender")] Profile profile, List<String> checkedValues)
+        public async Task<IActionResult> Edit(string id, [Bind("UserId,FirstName,LastName,DateOfBirth,Gender")] Profile profile, List<String> checkedPersonalityValues)
         {
             if (id != profile.UserId)
             {
@@ -133,7 +133,7 @@ namespace BDate.Controllers
                     var profileOnGet = _context.Profiles.Include(p => p.Personalities).SingleOrDefault(a => a.UserId == id);
                     profileOnGet.Personalities.Clear();
 
-                    foreach (var checkedPersonality in checkedValues)
+                    foreach (var checkedPersonality in checkedPersonalityValues)
                     {
                         var personality = _context.Personalities
                         .FirstOrDefaultAsync(m => m.PersonalityId == checkedPersonality);

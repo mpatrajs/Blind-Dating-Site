@@ -51,24 +51,17 @@
                         if (@Model.Personalities.ToHashSet().Contains(item) == true)
                         {
                             <div class="form-group">
-                                <input id="scales" type="checkbox" name=checkedValues value="@item.PersonalityId" checked>
+                                <input id="scales" type="checkbox" name=checkedPersonalityValues value="@item.PersonalityId" checked>
                                 <label for="@item.PersonalityName">@item.PersonalityName</label>
                             </div>
                         }
                         else
                         {
                             <div class="form-group">
-                                <input id="scales" type="checkbox" name=checkedValues value="@item.PersonalityId">
+                                <input id="scales" type="checkbox" name=checkedPersonalityValues value="@item.PersonalityId">
                                 <label for="@item.PersonalityName">@item.PersonalityName</label>
                             </div>
                         }
-                        @*<tr>
-                    <td>
-                        @item.PersonalityId
-                        @item.PersonalityName
-                        @Html.TextBox("NameOfTheTextbox", (String)item.PersonalityName)
-                    </td>
-                </tr>*@
                     }
                 }
             </div>
