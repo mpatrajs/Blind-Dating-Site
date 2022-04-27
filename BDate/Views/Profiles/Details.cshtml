@@ -44,6 +44,7 @@
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Personalities)
         </dt>
+        <h4>Personalities</h4>
         @if (Model.Personalities != null)
         {
             foreach (var item in Model.Personalities)
@@ -52,6 +53,19 @@
                     @Html.HiddenFor(x => item.PersonalityId)
                     <td>
                         @Html.TextBoxFor(x => item.PersonalityName, new { @class = "form-control", @readonly = "readonly" })
+                    </td>
+                </tr>
+            }
+        }
+        <h4>Hobbies</h4>
+        @if (Model.Hobbies != null)
+        {
+            foreach (var item in Model.Hobbies)
+            {
+                <tr>
+                    @Html.HiddenFor(x => item.HobbyId)
+                    <td>
+                        @Html.TextBoxFor(x => item.HobbyName, new { @class = "form-control", @readonly = "readonly" })
                     </td>
                 </tr>
             }

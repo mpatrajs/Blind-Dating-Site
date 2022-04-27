@@ -39,6 +39,7 @@ namespace BDate.Controllers
 
             var profile = await _context.Profiles
                 .Include(p => p.Personalities)
+                .Include(p => p.Hobbies)
                 .Include(p => p.ApplicationUser)
                 .FirstOrDefaultAsync(m => m.UserId == id);
 
@@ -91,20 +92,13 @@ namespace BDate.Controllers
             {
                 return NotFound();
             }
-            var profile = _context.Profiles.Include(p => p.Personalities)
+            var profile = _context.Profiles.Include(p => p.Personalities).Include(p => p.Hobbies)
             .SingleOrDefault(a => a.UserId == id);
-
-
-            //var profile = await _context.Profiles.FindAsync(id);
-
-
-            /*            var profile = await _context.Profiles
-                        .Include(p => p.Personalities)
-                        .Include(p => p.ApplicationUser)
-                        .FirstOrDefaultAsync(m => m.UserId == id);*/
 
             var personalities = await _context.Personalities.ToListAsync();
             ViewBag.Personality = personalities;
+            var hobbies = await _context.Hobbies.ToListAsync();
+            ViewBag.Hobby = hobbies;
             if (profile == null)
             {
                 return NotFound();
@@ -118,7 +112,7 @@ namespace BDate.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("UserId,FirstName,LastName,DateOfBirth,Gender")] Profile profile, List<String> checkedPersonalityValues)
+        public async Task<IActionResult> Edit(string id, [Bind("UserId,FirstName,LastName,DateOfBirth,Gender")] Profile profile, List<String> checkedPersonalityValues, List<String> checkedHobbyValues)
         {
             if (id != profile.UserId)
             {
@@ -130,15 +124,23 @@ namespace BDate.Controllers
                 try
                 {
                    _context.Update(profile);
-                    var profileOnGet = _context.Profiles.Include(p => p.Personalities).SingleOrDefault(a => a.UserId == id);
+                    var profileOnGet = _context.Profiles.Include(p => p.Personalities).Include(p => p.Hobbies).SingleOrDefault(a => a.UserId == id);
                     profileOnGet.Personalities.Clear();
-
+                    profileOnGet.Hobbies.Clear();
                     foreach (var checkedPersonality in checkedPersonalityValues)
                     {
                         var personality = _context.Personalities
                         .FirstOrDefaultAsync(m => m.PersonalityId == checkedPersonality);
 
                         profile.Personalities.Add(await personality);
+                    }
+
+                    foreach (var checkedHobby in checkedHobbyValues)
+                    {
+                        var hobby = _context.Hobbies
+                        .FirstOrDefaultAsync(m => m.HobbyId == checkedHobby);
+
+                        profile.Hobbies.Add(await hobby);
                     }
 
                     _context.Update(profile);

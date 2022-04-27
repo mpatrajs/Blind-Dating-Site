@@ -39,7 +39,7 @@
                     <input type="submit" value="Save" class="btn btn-primary" />
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-3">
                 @if (ViewBag.Personality != null)
                 {
                     <h4>Personalities</h4>
@@ -60,6 +60,32 @@
                             <div class="form-group">
                                 <input id="scales" type="checkbox" name=checkedPersonalityValues value="@item.PersonalityId">
                                 <label for="@item.PersonalityName">@item.PersonalityName</label>
+                            </div>
+                        }
+                    }
+                }
+            </div>
+            <div class="col-md-3">
+                @if (ViewBag.Hobby != null)
+                {
+                    <h4>Hobbies</h4>
+                    foreach (var item in ViewBag.Hobby)
+                    {
+                        @*IF Profile HAS PERSONALITY FROM OVERALL PULL (item ViewBag.Personality)*@
+                        @*Model.Personalities means Profile.Personalities => Personalities linked with Profile*@
+                        @Model.Hobbies.ToHashSet().Contains(item);
+                        if (@Model.Hobbies.ToHashSet().Contains(item) == true)
+                        {
+                            <div class="form-group">
+                                <input id="scales" type="checkbox" name=checkedHobbyValues value="@item.HobbyId" checked>
+                                <label for="@item.HobbyName">@item.HobbyName</label>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="form-group">
+                                <input id="scales" type="checkbox" name=checkedHobbyValues value="@item.HobbyId">
+                                <label for="@item.HobbyName">@item.HobbyName</label>
                             </div>
                         }
                     }
