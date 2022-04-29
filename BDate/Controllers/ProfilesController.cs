@@ -25,8 +25,59 @@ namespace BDate.Controllers
         // GET: Profiles
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Profiles.Include(p => p.ApplicationUser);
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var applicationDbContext = _context.Profiles.Where(p => p.UserId != currentUserId)
+                .Include(p => p.Personalities)
+                .Include(p => p.Hobbies)
+                .Include(p => p.Matches)
+                .Include(p => p.ApplicationUser);
+
+            var matchesOfCureentUser = await _context.Matches
+                .Where(m => m.fromProfileId == currentUserId)
+                .Select(m => m.toProfileId)
+                .ToListAsync();
+
+            var profileIdOfAlreadyMatchedId = await _context.Matches
+                .Where(p => p.toProfileId == currentUserId)
+                .Select(p => p.fromProfileId)
+                .ToListAsync();
+
+            ViewBag.currentUserId = currentUserId;
+            ViewBag.matchesOfCureentUser = matchesOfCureentUser;
+            ViewBag.profileIdOfAlreadyMatchedId = profileIdOfAlreadyMatchedId;
+
             return View(await applicationDbContext.ToListAsync());
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> IndexAsync(String profileId)
+        {
+            //current userId
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // check if current user already have fromProfileId then redirecttoaction
+            // if Matches where toProfileId == userId. Select fromProfileId . to List Contains (profileId this is from url)
+            var profileIdOfAlreadyMatchedId = await _context.Matches
+                .Where(p => p.toProfileId == userId)
+                .Select(p => p.fromProfileId)
+                .ToListAsync();
+
+            if (!profileIdOfAlreadyMatchedId.Contains(profileId))
+            {
+                var match = new Match
+                {
+                    fromProfileId = userId,
+                    toProfileId = profileId,
+                };
+
+                _context.Add(match);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index", "Profiles");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Profiles");
+            }
         }
 
         // GET: Profiles/Details/5
@@ -57,10 +108,13 @@ namespace BDate.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             var personalities = await _context.Personalities.ToListAsync();
-            ViewBag.Personality = personalities;
             var hobbies = await _context.Hobbies.ToListAsync();
+
+            ViewBag.Personality = personalities;
             ViewBag.Hobby = hobbies;
+
             ViewData["UserId"] = new SelectList(_context.Users.Where(u => u.Id == userId), "Id", "Id");
+
             return View();
         }
 
@@ -129,8 +183,9 @@ namespace BDate.Controllers
             .SingleOrDefault(a => a.UserId == id);
 
             var personalities = await _context.Personalities.ToListAsync();
-            ViewBag.Personality = personalities;
             var hobbies = await _context.Hobbies.ToListAsync();
+
+            ViewBag.Personality = personalities;
             ViewBag.Hobby = hobbies;
 
             if (profile == null)
@@ -158,9 +213,15 @@ namespace BDate.Controllers
                 try
                 {
                    _context.Update(profile);
-                    var profileOnGet = _context.Profiles.Include(p => p.Personalities).Include(p => p.Hobbies).SingleOrDefault(a => a.UserId == id);
+
+                    var profileOnGet = _context.Profiles
+                        .Include(p => p.Personalities)
+                        .Include(p => p.Hobbies)
+                        .SingleOrDefault(a => a.UserId == id);
+
                     profileOnGet.Personalities.Clear();
                     profileOnGet.Hobbies.Clear();
+
                     foreach (var checkedPersonality in checkedPersonalityValues)
                     {
                         var personality = _context.Personalities
@@ -191,7 +252,6 @@ namespace BDate.Controllers
                         throw;
                     }
                 }
-                //return RedirectToAction(nameof(Index));
                 return RedirectToAction("Details", "Profiles", new { id = profile.UserId });
             }
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", profile.UserId);
@@ -209,6 +269,7 @@ namespace BDate.Controllers
             var profile = await _context.Profiles
                 .Include(p => p.ApplicationUser)
                 .FirstOrDefaultAsync(m => m.UserId == id);
+
             if (profile == null)
             {
                 return NotFound();

@@ -41,29 +41,35 @@
                 </div>
             </div>
             <div class="col-md-3">
-                <h4>Personalities</h4>
-                @foreach (var item in ViewBag.Personality)
+                @if (ViewBag.Personality != null)
                 {
-                    @*IF Profile HAS PERSONALITY FROM OVERALL PULL (item ViewBag.Personality)*@
-                    @*Model.Personalities means Profile.Personalities => Personalities linked with Profile*@
-                     <div class="form-group">
-                         <input id="scales" type="checkbox" name=checkedPersonalityValues value="@item.PersonalityId">
-                         <label for="@item.PersonalityName">@item.PersonalityName</label>
-                     </div>
+                    <h4>Personalities</h4>
+                    @foreach (var item in ViewBag.Personality)
+                    {
+                        @*IF Profile HAS PERSONALITY FROM OVERALL PULL (item ViewBag.Personality)*@
+                        @*Model.Personalities means Profile.Personalities => Personalities linked with Profile*@
+                        <div class="form-group">
+                            <input id="scales" type="checkbox" name=checkedPersonalityValues value="@item.PersonalityId">
+                            <label for="@item.PersonalityName">@item.PersonalityName</label>
+                        </div>
+                    }
                 }
-            </div>
+                </div>
             <div class="col-md-3">
-                <h4>Hobbies</h4>
-                @foreach (var item in ViewBag.Hobby)
+                @if (ViewBag.Hobby != null)
                 {
-                    @*IF Profile HAS PERSONALITY FROM OVERALL PULL (item ViewBag.Personality)*@
-                    @*Model.Personalities means Profile.Personalities => Personalities linked with Profile*@
-                     <div class="form-group">
-                         <input id="scales" type="checkbox" name=checkedHobbyValues value="@item.HobbyId">
-                         <label for="@item.HobbyName">@item.HobbyName</label>
-                     </div>
+                    <h4>Hobbies</h4>
+                    @foreach (var item in ViewBag.Hobby)
+                    {
+                        @*IF Profile HAS PERSONALITY FROM OVERALL PULL (item ViewBag.Personality)*@
+                        @*Model.Personalities means Profile.Personalities => Personalities linked with Profile*@
+                        <div class="form-group">
+                            <input id="scales" type="checkbox" name=checkedHobbyValues value="@item.HobbyId">
+                            <label for="@item.HobbyName">@item.HobbyName</label>
+                        </div>
+                    }
                 }
-            </div>
+                </div>
         </form>
     </div>
 </div>

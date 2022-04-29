@@ -24,7 +24,7 @@
             @Html.DisplayFor(model => model.LastName)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.DateOfBirth)
+            @Html.DisplayName("Age")
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.DateOfBirth)
@@ -41,12 +41,10 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.ApplicationUser.Id)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Personalities)
-        </dt>
-        <h4>Personalities</h4>
-        @if (Model.Personalities != null)
+        <div>
+        @if (Model.Personalities.Count() != 0)
         {
+            <h4>Personalities</h4>
             foreach (var item in Model.Personalities)
             {
                 <tr>
@@ -57,9 +55,11 @@
                 </tr>
             }
         }
-        <h4>Hobbies</h4>
-        @if (Model.Hobbies != null)
+        </div>
+        <div>
+        @if (Model.Hobbies.Count() != 0)
         {
+            <h4>Hobbies</h4>
             foreach (var item in Model.Hobbies)
             {
                 <tr>
@@ -70,9 +70,10 @@
                 </tr>
             }
         }
+        </div>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.UserId">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model.UserId">Edit profile</a> |
     <a asp-action="Index">Back to List</a>
 </div>
