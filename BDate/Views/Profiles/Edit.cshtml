@@ -94,7 +94,8 @@
                 }
             </div>
         </form>
-        <a asp-controller="Settings" asp-action="Edit" asp-route-id="@Model.UserId">Profile settings</a>
+        <a asp-controller="Settings" asp-action="Edit" asp-route-id="@Model.UserId">Profile settings</a> |
+        <a asp-controller="Profiles" asp-action="Delete" asp-route-id="@Model.UserId">Delete Profile</a>
     </div>
 </div>
 <style>

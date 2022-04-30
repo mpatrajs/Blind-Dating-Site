@@ -9,6 +9,7 @@ using BDate.Data;
 using BDate.Models;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BDate.Controllers
 {
@@ -16,18 +17,28 @@ namespace BDate.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        public ProfilesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        public ProfilesController(
+            ApplicationDbContext context,
+            UserManager<ApplicationUser> userManager,
+            RoleManager<IdentityRole> roleManager,
+            SignInManager<ApplicationUser> signInManager)
         {
             _context = context;
             _userManager = userManager;
+            _roleManager = roleManager;
+            _signInManager = signInManager;
         }
 
         // GET: Profiles
+
+        [Authorize(Roles = "ActiveUser")]
         public async Task<IActionResult> Index()
         {
-            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var applicationDbContext = _context.Profiles.Where(p => p.UserId != currentUserId)
+            var applicationDbContext = _context.Profiles.Where(p => p.UserId != userId)
                 .Include(p => p.Personalities)
                 .Include(p => p.Hobbies)
                 .Include(p => p.Matches)
@@ -36,24 +47,24 @@ namespace BDate.Controllers
 
             // Profile Ids to whom current user sent a match
             var matchesOfCureentUser = await _context.Matches
-                .Where(m => m.fromProfileId == currentUserId)
+                .Where(m => m.fromProfileId == userId)
                 .Select(m => m.toProfileId)
                 .ToListAsync();
 
             // Profile Ids which sent to current user match offer
             var profileIdOfAlreadyMatchedId = await _context.Matches
-                .Where(p => p.toProfileId == currentUserId)
+                .Where(p => p.toProfileId == userId)
                 .Select(p => p.fromProfileId)
                 .ToListAsync();
 
             //var setting = await _context.Settings.Select(s => s.)
-
-            ViewBag.currentUserId = currentUserId;
+            ViewBag.currentUserId = userId;
             ViewBag.matchesOfCureentUser = matchesOfCureentUser;
             ViewBag.profileIdOfAlreadyMatchedId = profileIdOfAlreadyMatchedId;
 
             return View(await applicationDbContext.ToListAsync());
         }
+        [Authorize(Roles = "ActiveUser")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> IndexAsync(String profileId)
@@ -86,6 +97,7 @@ namespace BDate.Controllers
         }
 
         // GET: Profiles/Details/5
+        [Authorize(Roles = "ActiveUser")]
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
@@ -108,6 +120,7 @@ namespace BDate.Controllers
         }
 
         // GET: Profiles/Create
+        [Authorize(Roles = "InActiveUser")]
         public async Task<IActionResult> Create()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -126,6 +139,7 @@ namespace BDate.Controllers
         // POST: Profiles/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "InActiveUser")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("UserId,FirstName,LastName,DateOfBirth,Gender")] Profile profile, List<String> checkedPersonalityValues, List<String> checkedHobbyValues)
@@ -155,8 +169,14 @@ namespace BDate.Controllers
                 }
 
                 //Changing current user`s isActive field to true (AspNetUsers table)
+                //Adding ActiveUser Role to user who created profile
                 var user = _userManager.FindByIdAsync(userId);
                 user.Result.IsActive = true;
+                var activeUser = _roleManager.FindByNameAsync("ActiveUser").Result;
+                if (activeUser != null)
+                {
+                    await _userManager.AddToRoleAsync(await user, activeUser.Name);
+                }
                 await _userManager.UpdateAsync(await user);
 
                 //Add one to one with Setting
@@ -166,20 +186,28 @@ namespace BDate.Controllers
                     isHiddenAge = false,
                     isHiddenLastName = false
                 };
+
                 _context.Add(setting);
                 await _context.SaveChangesAsync();
 
                 _context.Update(profile);
                 await _context.SaveChangesAsync();
 
+                // Automatically sign in user after creating profile to refresh cookie (cookie stores Claims and Roles)
+                ApplicationUser applicationUseruser = await _userManager.FindByIdAsync(userId);
+                if (applicationUseruser != null)
+                {
+                    await _signInManager.SignInAsync(applicationUseruser, isPersistent: false);
+                }
+
                 return RedirectToAction("Details", "Profiles", new { id = profile.UserId });
-                //return RedirectToAction(nameof(Index));
             }
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", profile.UserId);
             return View(profile);
         }
 
         // GET: Profiles/Edit/5
+        [Authorize(Roles = "ActiveUser")]
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -209,6 +237,7 @@ namespace BDate.Controllers
         // POST: Profiles/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "ActiveUser")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, [Bind("UserId,FirstName,LastName,DateOfBirth,Gender")] Profile profile, List<String> checkedPersonalityValues, List<String> checkedHobbyValues)
@@ -269,6 +298,7 @@ namespace BDate.Controllers
         }
 
         // GET: Profiles/Delete/5
+        [Authorize(Roles = "ActiveUser")]
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -289,14 +319,29 @@ namespace BDate.Controllers
         }
 
         // POST: Profiles/Delete/5
+        [Authorize(Roles = "ActiveUser")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = _userManager.FindByIdAsync(userId);
+            await _userManager.RemoveFromRoleAsync(await user, "ActiveUser");
+
+            await _userManager.UpdateAsync(await user);
+            // await _userManager.RemoveFromRoleAsync();
             var profile = await _context.Profiles.FindAsync(id);
             _context.Profiles.Remove(profile);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+            // Automatically sign in user after creating profile to refresh cookie (cookie stores Claims and Roles)
+            ApplicationUser applicationUseruser = await _userManager.FindByIdAsync(userId);
+            if (applicationUseruser != null)
+            {
+                await _signInManager.SignInAsync(applicationUseruser, isPersistent: false);
+            }
+
+            return RedirectToAction("Create", "Profiles");
         }
 
         private bool ProfileExists(string id)
@@ -305,6 +350,7 @@ namespace BDate.Controllers
         }
 
         // GET: Match
+        [Authorize(Roles = "ActiveUser")]
         public async Task<IActionResult> Match()
         {
             var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);

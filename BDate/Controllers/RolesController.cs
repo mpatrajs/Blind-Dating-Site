@@ -1,4 +1,5 @@
 ﻿using BDate.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -8,20 +9,22 @@ using System.Threading.Tasks;
 
 namespace BDate.Controllers
 {
-    public class Roles : Controller
+    public class RolesController : Controller
     {
         private readonly RoleManager<IdentityRole> roleManager;
 
-        public Roles(RoleManager<IdentityRole> roleManager)
+        public RolesController(RoleManager<IdentityRole> roleManager)
         {
             this.roleManager = roleManager;
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create(Role role)
         {
