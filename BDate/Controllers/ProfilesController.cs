@@ -171,12 +171,7 @@ namespace BDate.Controllers
                 //Changing current user`s isActive field to true (AspNetUsers table)
                 //Adding ActiveUser Role to user who created profile
                 var user = _userManager.FindByIdAsync(userId);
-                user.Result.IsActive = true;
-                var activeUser = _roleManager.FindByNameAsync("ActiveUser").Result;
-                if (activeUser != null)
-                {
-                    await _userManager.AddToRoleAsync(await user, activeUser.Name);
-                }
+                await _userManager.AddToRoleAsync(await user, "ActiveUser");
                 await _userManager.UpdateAsync(await user);
 
                 //Add one to one with Setting

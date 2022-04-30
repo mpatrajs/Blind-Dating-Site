@@ -29,9 +29,7 @@ namespace BDate.Controllers
         public async Task<IActionResult> Index()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
-            var userIsActive = _userManager.FindByIdAsync(userId).Result.IsActive;
 
-            ViewBag.IsActive = userIsActive;
             await _userManager.FindByIdAsync(userId);
             ApplicationUser applicationUser = await _userManager.FindByIdAsync(userId);
             if (await _userManager.IsInRoleAsync(applicationUser, "ActiveUser"))
@@ -42,14 +40,6 @@ namespace BDate.Controllers
             {
                 return RedirectToAction("Create", "Profiles", new { id = userId });
             }
-/*            if (userIsActive == false)
-            {
-                return RedirectToAction("Create", "Profiles", new { id = userId } );
-            }
-            else if (userIsActive == true)
-            {
-                return RedirectToAction("Index", "Profiles", new { area = "" });
-            } */
             else
             {
                 return NotFound();
@@ -61,7 +51,6 @@ namespace BDate.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user = _userManager.FindByIdAsync(userId);
-            user.Result.IsActive = true;
             
             await _userManager.UpdateAsync(await user);
             return RedirectToAction("Index", "Home");
