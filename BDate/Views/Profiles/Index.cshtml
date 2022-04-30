@@ -7,9 +7,6 @@
 
 <h1>Find Match</h1>
 
-<p>
-    <a asp-action="Details" asp-route-id="@ViewBag.currentUserId">My profile</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -40,12 +37,30 @@
             <td> 
                 @Html.DisplayFor(modelItem => item.FirstName)
             </td>
+            @if (item.Setting.isHiddenLastName == null || item.Setting.isHiddenLastName == true)
+            {
+            <td>
+
+            </td>
+            }
+            else
+            {
             <td>
                 @Html.DisplayFor(modelItem => item.LastName)
             </td>
+            }
+            @if (item.Setting.isHiddenAge == null || item.Setting.isHiddenAge == true)
+            {
+            <td>
+                
+            </td>
+            }
+            else
+            {
             <td>
                 @Html.DisplayFor(modelItem => item.DateOfBirth)
             </td>
+            }
             <td>
                 @Html.DisplayFor(modelItem => item.Gender)
             </td>
@@ -79,9 +94,6 @@
             }
             </td>
         <td>
-            <a asp-action="Edit" asp-route-id="@item.UserId">Edit</a> |
-            <a asp-action="Details" asp-route-id="@item.UserId">Details</a> |
-            <a asp-action="Delete" asp-route-id="@item.UserId">Delete</a> |
             @*Checks if logged in user already has pressed match for related user*@
             <div>
             @if (((IList<string>)ViewBag.matchesOfCureentUser).Contains(item.UserId)) {

@@ -42,12 +42,30 @@
             <td> 
                 @Html.DisplayFor(modelItem => item.FirstName)
             </td>
+            @if (item.Setting.isHiddenLastName == null || item.Setting.isHiddenLastName == true)
+            {
+            <td>
+
+            </td>
+            }
+            else
+            { 
             <td>
                 @Html.DisplayFor(modelItem => item.LastName)
             </td>
+            }
+            @if (item.Setting.isHiddenAge == null || item.Setting.isHiddenAge == true)
+            {
+            <td>
+
+            </td>
+            }
+            else
+            { 
             <td>
                 @Html.DisplayFor(modelItem => item.DateOfBirth)
             </td>
+            }
             <td>
                 @Html.DisplayFor(modelItem => item.Gender)
             </td>
@@ -80,30 +98,6 @@
                 </td>
             }
             </td>
-        <td>
-            <a asp-action="Edit" asp-route-id="@item.UserId">Edit</a> |
-            <a asp-action="Details" asp-route-id="@item.UserId">Details</a> |
-            <a asp-action="Delete" asp-route-id="@item.UserId">Delete</a> |
-            @*Checks if logged in user already has pressed match for related user*@
-            <div>
-            @if (((IList<string>)ViewBag.matchesOfCureentUser).Contains(item.UserId)) {
-                <div>
-                    <input type="submit" name=postSubmit value="Your match is sent🥰" disabled>
-                </div>
-            } else if (((IList<string>)ViewBag.profileIdOfAlreadyMatchedId).Contains(item.UserId)) {
-                <div>
-                    <input type="submit" name=postSubmit value="They matched you😍" disabled>
-                </div>
-            } else {
-                <div>
-                    <form method="post">
-                        <input type="hidden" name=profileId value="@item.UserId">
-                        <input type="submit" name=postSubmit value="Send match😘">
-                    </form>
-                </div>
-            }
-            </div>
-        </td>
         </tr>
         }
     }
