@@ -293,5 +293,33 @@ namespace BDate.Controllers
         {
             return _context.Profiles.Any(e => e.UserId == id);
         }
+
+        // GET: Match
+        public async Task<IActionResult> Match()
+        {
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var applicationDbContext = _context.Profiles.Where(p => p.UserId != currentUserId)
+                .Include(p => p.Personalities)
+                .Include(p => p.Hobbies)
+                .Include(p => p.Matches)
+                .Include(p => p.ApplicationUser);
+
+            var matchesOfCureentUser = await _context.Matches
+                .Where(m => m.fromProfileId == currentUserId)
+                .Select(m => m.toProfileId)
+                .ToListAsync();
+
+            var profileIdOfAlreadyMatchedId = await _context.Matches
+                .Where(p => p.toProfileId == currentUserId)
+                .Select(p => p.fromProfileId)
+                .ToListAsync();
+
+            ViewBag.currentUserId = currentUserId;
+            ViewBag.matchesOfCureentUser = matchesOfCureentUser;
+            ViewBag.profileIdOfAlreadyMatchedId = profileIdOfAlreadyMatchedId;
+
+            return View(await applicationDbContext.ToListAsync());
+        }
     }
 }
