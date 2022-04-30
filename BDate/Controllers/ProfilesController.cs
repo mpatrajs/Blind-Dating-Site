@@ -158,6 +158,7 @@ namespace BDate.Controllers
                 var user = _userManager.FindByIdAsync(userId);
                 user.Result.IsActive = true;
                 await _userManager.UpdateAsync(await user);
+
                 //Add one to one with Setting
                 var setting = new Setting
                 {
@@ -170,6 +171,7 @@ namespace BDate.Controllers
 
                 _context.Update(profile);
                 await _context.SaveChangesAsync();
+
                 return RedirectToAction("Details", "Profiles", new { id = profile.UserId });
                 //return RedirectToAction(nameof(Index));
             }
@@ -184,8 +186,11 @@ namespace BDate.Controllers
             {
                 return NotFound();
             }
-            var profile = _context.Profiles.Include(p => p.Personalities).Include(p => p.Hobbies)
-            .SingleOrDefault(a => a.UserId == id);
+
+            var profile = _context.Profiles
+                .Include(p => p.Personalities)
+                .Include(p => p.Hobbies)
+                .SingleOrDefault(a => a.UserId == id);
 
             var personalities = await _context.Personalities.ToListAsync();
             var hobbies = await _context.Hobbies.ToListAsync();
