@@ -1,4 +1,5 @@
 ﻿using BDate.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -15,53 +16,43 @@ namespace BDate.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly UserManager<ApplicationUser> _userManager;
-        public HomeController(ILogger<HomeController> logger, UserManager<ApplicationUser> userManager)
+        public HomeController(
+            ILogger<HomeController> logger, 
+            UserManager<ApplicationUser> userManager)
         {
             _logger = logger;
             _userManager = userManager;
         }
 
+        [Authorize(Roles = "InActiveUser, ActiveUser, Admin")]
         [HttpGet]
-        public IActionResult Index(string Id)
+        public async Task<IActionResult> Index()
         {
-            // ГОВНОКОД, НО ЕСТЬ БАЗОВАЯ ЛОГИКА
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
-            var userName = User.FindFirstValue(ClaimTypes.Name); // will give the user's userName
-            var userIsActive = _userManager.FindByIdAsync(userId).Result.IsActive;
 
-            ViewBag.urlId = Id;
-            ViewBag.userId = userId;
-            ViewBag.userName = userName;
-            ViewBag.IsActive = userIsActive;
-
-            if (userIsActive == false)
+            await _userManager.FindByIdAsync(userId);
+            ApplicationUser applicationUser = await _userManager.FindByIdAsync(userId);
+            if (await _userManager.IsInRoleAsync(applicationUser, "ActiveUser"))
             {
-                // if isActive == false
-                // fill Profile table
-                // Change attribute and return back to Home/Index
-                return View();
+                return RedirectToAction("Index", "Profiles", new { area = "" });
+            }
+            else if (await _userManager.IsInRoleAsync(applicationUser, "InActiveUser"))
+            {
+                return RedirectToAction("Create", "Profiles", new { id = userId });
             }
             else
             {
-                // else {view with users Users}
-                // isActive = true
-                // Give role => ActiveUser
-                // return list of profiles
-                return View("Privacy");
+                return NotFound();
             }
-            //return View();
         }
 
-        //When SUMBIT button is clicked
         [HttpPost]
         public async Task<IActionResult> IndexAsync()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user = _userManager.FindByIdAsync(userId);
-            user.Result.IsActive = true;
-
+            
             await _userManager.UpdateAsync(await user);
-            //var result = await _userManager.UpdateAsync(user);
             return RedirectToAction("Index", "Home");
         }
 

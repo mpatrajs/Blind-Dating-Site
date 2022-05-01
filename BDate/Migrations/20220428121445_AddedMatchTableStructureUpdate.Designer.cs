@@ -3,15 +3,17 @@ using System;
 using BDate.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace BDate.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220428121445_AddedMatchTableStructureUpdate")]
+    partial class AddedMatchTableStructureUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,6 +38,9 @@ namespace BDate.Migrations
                         .HasColumnType("character varying(256)");
 
                     b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
 
                     b.Property<bool>("LockoutEnabled")
@@ -98,13 +103,15 @@ namespace BDate.Migrations
 
             modelBuilder.Entity("BDate.Models.Match", b =>
                 {
-                    b.Property<string>("fromProfileId")
+                    b.Property<string>("matchedProfileId")
                         .HasColumnType("text");
 
-                    b.Property<string>("toProfileId")
+                    b.Property<string>("ProfileUserId")
                         .HasColumnType("text");
 
-                    b.HasKey("fromProfileId", "toProfileId");
+                    b.HasKey("matchedProfileId");
+
+                    b.HasIndex("ProfileUserId");
 
                     b.ToTable("Matches");
                 });
@@ -380,13 +387,9 @@ namespace BDate.Migrations
 
             modelBuilder.Entity("BDate.Models.Match", b =>
                 {
-                    b.HasOne("BDate.Models.Profile", "Profile")
+                    b.HasOne("BDate.Models.Profile", null)
                         .WithMany("Matches")
-                        .HasForeignKey("fromProfileId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Profile");
+                        .HasForeignKey("ProfileUserId");
                 });
 
             modelBuilder.Entity("BDate.Models.Profile", b =>

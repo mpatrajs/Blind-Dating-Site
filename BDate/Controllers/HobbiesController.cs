@@ -10,85 +10,85 @@ using BDate.Models;
 
 namespace BDate.Controllers
 {
-    public class UsersController : Controller
+    public class HobbiesController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public UsersController(ApplicationDbContext context)
+        public HobbiesController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Users
+        // GET: Hobbies
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Users.ToListAsync());
+            return View(await _context.Hobbies.ToListAsync());
         }
 
-        // GET: Users/Details/5
-        public async Task<IActionResult> Details(long? id)
+        // GET: Hobbies/Details/5
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var user = await _context.Users
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (user == null)
+            var hobby = await _context.Hobbies
+                .FirstOrDefaultAsync(m => m.HobbyId == id);
+            if (hobby == null)
             {
                 return NotFound();
             }
 
-            return View(user);
+            return View(hobby);
         }
 
-        // GET: Users/Create
+        // GET: Hobbies/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Users/Create
+        // POST: Hobbies/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,FirstName,LastName,Mail,Password,DateOfBirth,Gender,AmericanGender,Personal,Hobbies")] User user)
+        public async Task<IActionResult> Create([Bind("HobbyId,HobbyName")] Hobby hobby)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(user);
+                _context.Add(hobby);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(user);
+            return View(hobby);
         }
 
-        // GET: Users/Edit/5
-        public async Task<IActionResult> Edit(long? id)
+        // GET: Hobbies/Edit/5
+        public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var user = await _context.Users.FindAsync(id);
-            if (user == null)
+            var hobby = await _context.Hobbies.FindAsync(id);
+            if (hobby == null)
             {
                 return NotFound();
             }
-            return View(user);
+            return View(hobby);
         }
 
-        // POST: Users/Edit/5
+        // POST: Hobbies/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("ID,FirstName,LastName,Mail,Password,DateOfBirth,Gender,AmericanGender,Personal,Hobbies")] User user)
+        public async Task<IActionResult> Edit(string id, [Bind("HobbyId,HobbyName")] Hobby hobby)
         {
-            if (id != user.ID)
+            if (id != hobby.HobbyId)
             {
                 return NotFound();
             }
@@ -97,12 +97,12 @@ namespace BDate.Controllers
             {
                 try
                 {
-                    _context.Update(user);
+                    _context.Update(hobby);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UserExists(user.ID))
+                    if (!HobbyExists(hobby.HobbyId))
                     {
                         return NotFound();
                     }
@@ -113,41 +113,41 @@ namespace BDate.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(user);
+            return View(hobby);
         }
 
-        // GET: Users/Delete/5
-        public async Task<IActionResult> Delete(long? id)
+        // GET: Hobbies/Delete/5
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var user = await _context.Users
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (user == null)
+            var hobby = await _context.Hobbies
+                .FirstOrDefaultAsync(m => m.HobbyId == id);
+            if (hobby == null)
             {
                 return NotFound();
             }
 
-            return View(user);
+            return View(hobby);
         }
 
-        // POST: Users/Delete/5
+        // POST: Hobbies/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(long id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var user = await _context.Users.FindAsync(id);
-            _context.Users.Remove(user);
+            var hobby = await _context.Hobbies.FindAsync(id);
+            _context.Hobbies.Remove(hobby);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UserExists(long id)
+        private bool HobbyExists(string id)
         {
-            return _context.Users.Any(e => e.ID == id);
+            return _context.Hobbies.Any(e => e.HobbyId == id);
         }
     }
 }

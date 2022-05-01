@@ -29,12 +29,16 @@ namespace BDate
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
-
+            services.AddDbContext<ApplicationDbContext>(options => {
+                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
+                //options.EnableSensitiveDataLogging();
+            });
+   
             services.AddDefaultIdentity<ApplicationUser>(options =>
             options.SignIn.RequireConfirmedAccount = true)
-           .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddRoles<IdentityRole>()
+                .AddRoleManager<RoleManager<IdentityRole>>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
 
             //IF user not logged in returns to login page
             services.AddMvc(options =>

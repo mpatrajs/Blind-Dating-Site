@@ -3,15 +3,17 @@ using System;
 using BDate.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace BDate.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220424134446_RemovedUsers")]
+    partial class RemovedUsers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,6 +38,9 @@ namespace BDate.Migrations
                         .HasColumnType("character varying(256)");
 
                     b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
 
                     b.Property<bool>("LockoutEnabled")
@@ -94,19 +99,6 @@ namespace BDate.Migrations
                     b.HasKey("HobbyId");
 
                     b.ToTable("Hobbies");
-                });
-
-            modelBuilder.Entity("BDate.Models.Match", b =>
-                {
-                    b.Property<string>("fromProfileId")
-                        .HasColumnType("text");
-
-                    b.Property<string>("toProfileId")
-                        .HasColumnType("text");
-
-                    b.HasKey("fromProfileId", "toProfileId");
-
-                    b.ToTable("Matches");
                 });
 
             modelBuilder.Entity("BDate.Models.Personality", b =>
@@ -378,17 +370,6 @@ namespace BDate.Migrations
                     b.ToTable("PersonalityProfile");
                 });
 
-            modelBuilder.Entity("BDate.Models.Match", b =>
-                {
-                    b.HasOne("BDate.Models.Profile", "Profile")
-                        .WithMany("Matches")
-                        .HasForeignKey("fromProfileId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Profile");
-                });
-
             modelBuilder.Entity("BDate.Models.Profile", b =>
                 {
                     b.HasOne("BDate.Models.ApplicationUser", "ApplicationUser")
@@ -499,8 +480,6 @@ namespace BDate.Migrations
 
             modelBuilder.Entity("BDate.Models.Profile", b =>
                 {
-                    b.Navigation("Matches");
-
                     b.Navigation("Setting");
                 });
 #pragma warning restore 612, 618

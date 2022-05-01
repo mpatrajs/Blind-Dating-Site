@@ -10,23 +10,22 @@ using BDate.Models;
 
 namespace BDate.Controllers
 {
-    public class SettingsController : Controller
+    public class PersonalitiesController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public SettingsController(ApplicationDbContext context)
+        public PersonalitiesController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Settings
+        // GET: Personalities
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Settings.Include(s => s.Profile);
-            return View(await applicationDbContext.ToListAsync());
+            return View(await _context.Personalities.ToListAsync());
         }
 
-        // GET: Settings/Details/5
+        // GET: Personalities/Details/5
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
@@ -34,42 +33,39 @@ namespace BDate.Controllers
                 return NotFound();
             }
 
-            var setting = await _context.Settings
-                .Include(s => s.Profile)
-                .FirstOrDefaultAsync(m => m.SettingId == id);
-            if (setting == null)
+            var personality = await _context.Personalities
+                .FirstOrDefaultAsync(m => m.PersonalityId == id);
+            if (personality == null)
             {
                 return NotFound();
             }
 
-            return View(setting);
+            return View(personality);
         }
 
-        // GET: Settings/Create
+        // GET: Personalities/Create
         public IActionResult Create()
         {
-            ViewData["SettingId"] = new SelectList(_context.Profiles, "UserId", "UserId");
             return View();
         }
 
-        // POST: Settings/Create
+        // POST: Personalities/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SettingId,isHiddenAge,isHiddenLastName")] Setting setting)
+        public async Task<IActionResult> Create([Bind("PersonalityId,PersonalityName")] Personality personality)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(setting);
+                _context.Add(personality);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["SettingId"] = new SelectList(_context.Profiles, "UserId", "UserId", setting.SettingId);
-            return View(setting);
+            return View(personality);
         }
 
-        // GET: Settings/Edit/5
+        // GET: Personalities/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -77,23 +73,22 @@ namespace BDate.Controllers
                 return NotFound();
             }
 
-            var setting = await _context.Settings.FindAsync(id);
-            if (setting == null)
+            var personality = await _context.Personalities.FindAsync(id);
+            if (personality == null)
             {
                 return NotFound();
             }
-            ViewData["SettingId"] = new SelectList(_context.Profiles, "UserId", "UserId", setting.SettingId);
-            return View(setting);
+            return View(personality);
         }
 
-        // POST: Settings/Edit/5
+        // POST: Personalities/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("SettingId,isHiddenAge,isHiddenLastName")] Setting setting)
+        public async Task<IActionResult> Edit(string id, [Bind("PersonalityId,PersonalityName")] Personality personality)
         {
-            if (id != setting.SettingId)
+            if (id != personality.PersonalityId)
             {
                 return NotFound();
             }
@@ -102,12 +97,12 @@ namespace BDate.Controllers
             {
                 try
                 {
-                    _context.Update(setting);
+                    _context.Update(personality);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!SettingExists(setting.SettingId))
+                    if (!PersonalityExists(personality.PersonalityId))
                     {
                         return NotFound();
                     }
@@ -116,14 +111,12 @@ namespace BDate.Controllers
                         throw;
                     }
                 }
-                //return RedirectToAction(nameof(Index));
-                return RedirectToAction("Details", "Profiles", new { id = setting.SettingId });
+                return RedirectToAction(nameof(Index));
             }
-            ViewData["SettingId"] = new SelectList(_context.Profiles, "UserId", "UserId", setting.SettingId);
-            return View(setting);
+            return View(personality);
         }
 
-        // GET: Settings/Delete/5
+        // GET: Personalities/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -131,31 +124,30 @@ namespace BDate.Controllers
                 return NotFound();
             }
 
-            var setting = await _context.Settings
-                .Include(s => s.Profile)
-                .FirstOrDefaultAsync(m => m.SettingId == id);
-            if (setting == null)
+            var personality = await _context.Personalities
+                .FirstOrDefaultAsync(m => m.PersonalityId == id);
+            if (personality == null)
             {
                 return NotFound();
             }
 
-            return View(setting);
+            return View(personality);
         }
 
-        // POST: Settings/Delete/5
+        // POST: Personalities/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var setting = await _context.Settings.FindAsync(id);
-            _context.Settings.Remove(setting);
+            var personality = await _context.Personalities.FindAsync(id);
+            _context.Personalities.Remove(personality);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool SettingExists(string id)
+        private bool PersonalityExists(string id)
         {
-            return _context.Settings.Any(e => e.SettingId == id);
+            return _context.Personalities.Any(e => e.PersonalityId == id);
         }
     }
 }

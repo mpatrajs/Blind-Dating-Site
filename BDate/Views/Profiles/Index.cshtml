@@ -1,0 +1,125 @@
+﻿@model IEnumerable<BDate.Models.Profile>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Find Match</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateOfBirth)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Gender)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Personalities)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Hobbies)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td> 
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            @if (item.Setting.isHiddenLastName == null || item.Setting.isHiddenLastName == true)
+            {
+            <td>
+
+            </td>
+            }
+            else
+            {
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            }
+            @if (item.Setting.isHiddenAge == null || item.Setting.isHiddenAge == true)
+            {
+            <td>
+                
+            </td>
+            }
+            else
+            {
+            <td>
+                @Html.DisplayFor(modelItem => item.DateOfBirth)
+            </td>
+            }
+            <td>
+                @Html.DisplayFor(modelItem => item.Gender)
+            </td>
+            <td>
+            @if (item.Personalities.Count() != 0)
+            {
+                @foreach (var personality in item.Personalities)
+                {     
+                    @Html.DisplayFor(modelItem => personality.PersonalityName)
+                    <br />
+                }
+            }
+            else
+            {
+
+            }
+            </td>
+            <td>
+            @if (item.Hobbies.Count() != 0)
+            {
+                @foreach (var hobby in item.Hobbies)
+                {     
+                    @Html.DisplayFor(modelItem => hobby.HobbyName)
+                    <br />
+                }
+            }
+            else
+            {
+                <td>
+                </td>
+            }
+            </td>
+        <td>
+            @*Checks if logged in user already has pressed match for related user*@
+            <div>
+            @if (((IList<string>)ViewBag.matchesOfCureentUser).Contains(item.UserId)) {
+                <div>
+                    <input type="submit" name=postSubmit value="Your match is sent🥰" disabled>
+                </div>
+            } else if (((IList<string>)ViewBag.profileIdOfAlreadyMatchedId).Contains(item.UserId)) {
+                <div>
+                    <input type="submit" name=postSubmit value="They matched you😍" disabled>
+                </div>
+            } else {
+                <div>
+                    <form method="post">
+                        <input type="hidden" name=profileId value="@item.UserId">
+                        <input type="submit" name=postSubmit value="Send match😘">
+                    </form>
+                </div>
+            }
+            </div>
+        </td>
+        </tr>
+        }
+            </tbody>
+        </table>
+<style>
+    input:disabled {
+        color: lightcoral;
+    }
+</style>
