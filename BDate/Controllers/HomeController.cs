@@ -40,6 +40,10 @@ namespace BDate.Controllers
             {
                 return RedirectToAction("Create", "Profiles", new { id = userId });
             }
+            else if (await _userManager.IsInRoleAsync(applicationUser, "Admin"))
+            {
+                return RedirectToAction("Create", "Roles", new { id = userId });
+            }
             else
             {
                 return NotFound();
