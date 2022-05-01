@@ -168,13 +168,12 @@ namespace BDate.Controllers
                     profile.Hobbies.Add(await hobby);
                 }
 
-                //Changing current user`s isActive field to true (AspNetUsers table)
-                //Adding ActiveUser Role to user who created profile
+                //Changing users role from InActiveUser to ActiveUser
                 var user = _userManager.FindByIdAsync(userId);
                 await _userManager.AddToRoleAsync(await user, "ActiveUser");
-                //await _userManager.UpdateAsync(await user);
                 await _userManager.RemoveFromRoleAsync(await user, "InActiveUser");
                 await _userManager.UpdateAsync(await user);
+
                 //Add one to one with Setting
                 var setting = new Setting
                 {
@@ -322,8 +321,8 @@ namespace BDate.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user = _userManager.FindByIdAsync(userId);
+            //Changing users role from ActiveUser to InActiveUser
             await _userManager.RemoveFromRoleAsync(await user, "ActiveUser");
-            //await _userManager.UpdateAsync(await user);
             await _userManager.AddToRoleAsync(await user, "InActiveUser");
             await _userManager.UpdateAsync(await user);
 
