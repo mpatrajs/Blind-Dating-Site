@@ -172,8 +172,9 @@ namespace BDate.Controllers
                 //Adding ActiveUser Role to user who created profile
                 var user = _userManager.FindByIdAsync(userId);
                 await _userManager.AddToRoleAsync(await user, "ActiveUser");
+                //await _userManager.UpdateAsync(await user);
+                await _userManager.RemoveFromRoleAsync(await user, "InActiveUser");
                 await _userManager.UpdateAsync(await user);
-
                 //Add one to one with Setting
                 var setting = new Setting
                 {
@@ -322,8 +323,10 @@ namespace BDate.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user = _userManager.FindByIdAsync(userId);
             await _userManager.RemoveFromRoleAsync(await user, "ActiveUser");
-
+            //await _userManager.UpdateAsync(await user);
+            await _userManager.AddToRoleAsync(await user, "InActiveUser");
             await _userManager.UpdateAsync(await user);
+
             // await _userManager.RemoveFromRoleAsync();
             var profile = await _context.Profiles.FindAsync(id);
             _context.Profiles.Remove(profile);
