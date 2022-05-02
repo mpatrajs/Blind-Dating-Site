@@ -210,7 +210,8 @@ namespace BDate.Controllers
                 return NotFound();
             }
 
-            var profile = _context.Profiles
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var profile = _context.Profiles.Where(p => p.UserId == userId)
                 .Include(p => p.Personalities)
                 .Include(p => p.Hobbies)
                 .SingleOrDefault(a => a.UserId == id);
@@ -248,7 +249,8 @@ namespace BDate.Controllers
                 {
                    _context.Update(profile);
 
-                    var profileOnGet = _context.Profiles
+                    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    var profileOnGet = _context.Profiles.Where(p => p.UserId == userId)
                         .Include(p => p.Personalities)
                         .Include(p => p.Hobbies)
                         .SingleOrDefault(a => a.UserId == id);
