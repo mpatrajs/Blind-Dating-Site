@@ -22,18 +22,21 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1 justify-content-end">
                         @if (this.User.IsInRole("InActiveUser"))
-                        { 
+                        {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Profiles" asp-action="Create"><span style="color:cornflowerblue">Please, Click here to create your profile first</span></a>
                             </li>
                         }
                         @if (this.User.IsInRole("ActiveUser"))
-                        { 
+                        {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Profiles" asp-action="Index">Find Match</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Profiles" asp-action="Match">My Matches</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Profiles" asp-action="Chat"><span style="color:cornflowerblue">My Chat</span></a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Profiles" asp-action="Details" asp-route-id=@User.FindFirstValue(ClaimTypes.NameIdentifier)>My Profile</a>
@@ -73,6 +76,8 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    <script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/chat.js"></script>
 </body>
 </html>
 <style>

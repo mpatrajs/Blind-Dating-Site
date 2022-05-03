@@ -57,7 +57,6 @@ namespace BDate.Controllers
                 .Select(p => p.fromProfileId)
                 .ToListAsync();
 
-            //var setting = await _context.Settings.Select(s => s.)
             ViewBag.currentUserId = userId;
             ViewBag.matchesOfCureentUser = matchesOfCureentUser;
             ViewBag.profileIdOfAlreadyMatchedId = profileIdOfAlreadyMatchedId;
@@ -361,6 +360,13 @@ namespace BDate.Controllers
                 .Include(p => p.Setting)
                 .Include(p => p.ApplicationUser);
 
+            // Profile Ids to whom current user sent a match
+            var matchesOfCureentUser = await _context.Matches
+                .Where(m => m.fromProfileId == currentUserId)
+                .Select(m => m.toProfileId)
+                .ToListAsync();
+
+            // Profile Ids which sent to current user match offer
             var profileIdOfAlreadyMatchedId = await _context.Matches
                 .Where(p => p.toProfileId == currentUserId)
                 .Select(p => p.fromProfileId)
@@ -368,8 +374,15 @@ namespace BDate.Controllers
 
             ViewBag.currentUserId = currentUserId;
             ViewBag.profileIdOfAlreadyMatchedId = profileIdOfAlreadyMatchedId;
+            ViewBag.matchesOfCureentUser = matchesOfCureentUser;
 
             return View(await applicationDbContext.ToListAsync());
+        }
+        public IActionResult Chat()
+        {
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            ViewBag.currentUserId = currentUserId;
+            return View();
         }
     }
 }

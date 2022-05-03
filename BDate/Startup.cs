@@ -13,6 +13,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using BDate.Models;
+using BDate.Hubs;
 
 namespace BDate
 {
@@ -33,7 +34,7 @@ namespace BDate
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
                 //options.EnableSensitiveDataLogging();
             });
-   
+
             services.AddDefaultIdentity<ApplicationUser>(options =>
             options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
@@ -58,6 +59,7 @@ namespace BDate
 
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -80,13 +82,14 @@ namespace BDate
 
             app.UseAuthentication();
             app.UseAuthorization();
-
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
+                endpoints.MapHub<ChatHub>("/chatHub");
             });
 
         }
