@@ -378,11 +378,35 @@ namespace BDate.Controllers
 
             return View(await applicationDbContext.ToListAsync());
         }
-        public IActionResult Chat()
+        // POST Match
+        // 2) Redirects to Profiles/Chat roomName = currentUserId&
+        // 3) 
+        [Authorize(Roles = "ActiveUser")]
+        [HttpPost]
+        public async Task<IActionResult> Match(String profileId)
         {
             var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             ViewBag.currentUserId = currentUserId;
-            return View();
+            // 1) CHANGES DENDIS VIEW YOUR MATCH IS SENT TO LETS CHAT 
+
+            return RedirectToAction("Chat", "Profiles", new { roomId = profileId + "&" + currentUserId });
+        }
+
+        [Authorize(Roles = "ActiveUser")]
+        public IActionResult Chat(string roomId)
+        {
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (roomId != null && roomId.Contains(currentUserId))
+            {
+                var profile = _context.Profiles
+                    .Where(p => p.UserId == currentUserId);
+
+                ViewBag.currentUserId = currentUserId;
+                ViewBag.roomId = roomId;
+                ViewBag.currentUserName = profile.Select(p => p.FirstName).FirstOrDefault();
+                return View();
+            }
+            return NotFound();
         }
     }
 }

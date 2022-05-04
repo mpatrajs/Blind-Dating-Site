@@ -1,33 +1,40 @@
 ﻿@{
     ViewData["Title"] = "Chat";
 }
-
 <div class="container">
+    <div class="row">&nbsp;</div>
     <div class="row">
-        @ViewBag.currentUserId
-        <div class="col-3">Connection Id</div>
-        <div class="col-6"><span id="connectionId" /></div>
+        <div class="col-2">Room</div>
+        <div class="col-4">
+            <input type="text" id="room" value="@ViewBag.roomId" readonly/>
+        </div>
+
     </div>
     <div class="row">&nbsp;</div>
     <div class="row">
+        <div class="col-6">
+            <input type="button" id="joinButton" value="Join  Room" />
+        </div>
+    </div>
+</div>
+@ViewBag.currentUserId
+<div class="col-3">Connection Id</div>
+<div class="col-6"><span id="connectionId" /></div>
+<div class="container">
+    <div class="row">&nbsp;</div>
+    <div class="row">
         <div class="col-2">User</div>
-        <div class="col-4"><input type="text" id="userInput" /></div>
+        <div class="col-4"><input type="text" id="userInput" value="@ViewBag.currentUserName" readonly/></div>
     </div>
     <div class="row">
         <div class="col-2">Message</div>
         <div class="col-4"><input type="text" id="messageInput" /></div>
-    </div>
-    <div class="row">
-        <div class="col-2">Receiver Id</div>
-        <div class="col-4"><input type="text" id="receiverId" /></div>
-    </div>
 
+    </div>
     <div class="row">&nbsp;</div>
     <div class="row">
         <div class="col-6">
-            <input type="button" id="sendToUser" value="Send Message" />&nbsp;&nbsp;
-            <input type="button" id="sendButton" value="Send Message to All" />
-
+            <input type="button" id="sendButton" value="Send Message" />
         </div>
     </div>
 </div>
@@ -41,3 +48,5 @@
         <ul id="messagesList"></ul>
     </div>
 </div>
+<script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/chat.js"></script>

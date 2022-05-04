@@ -10,11 +10,19 @@ namespace BDate.Hubs
 {
     public class ChatHub : Hub
     {
-        public async Task SendMessage(string user, string message)
+
+        public async Task SendMessage(string user, string message, string room, bool join)
         {
-            if (!String.IsNullOrEmpty(message))
+            if (join)
             {
-                await Clients.All.SendAsync("ReceiveMessage", user, message);
+                await JoinRoom(room).ConfigureAwait(false);
+                await Clients.Group(room).SendAsync("ReceiveMessage", user, " joined to " + room).ConfigureAwait(true);
+
+            }
+            else
+            {
+                await Clients.Group(room).SendAsync("ReceiveMessage", user, message).ConfigureAwait(true);
+
             }
         }
 
@@ -22,11 +30,21 @@ namespace BDate.Hubs
         {
             if (!String.IsNullOrEmpty(message))
             {
+                //Returning to view our send messege
                 await Clients.Client(Context.ConnectionId).SendAsync("ReceiveMessage", user, message);
+                //Returning messege which was written by partner
                 await Clients.Client(receiverConnectionId).SendAsync("ReceiveMessage", user, message);
             }
         }
+        public Task JoinRoom(string roomName)
+        {
+            return Groups.AddToGroupAsync(Context.ConnectionId, roomName);
+        }
 
+        public Task LeaveRoom(string roomName)
+        {
+            return Groups.RemoveFromGroupAsync(Context.ConnectionId, roomName);
+        }
         public string GetConnectionId() => Context.ConnectionId;
     }
 }
