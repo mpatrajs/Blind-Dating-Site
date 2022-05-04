@@ -175,12 +175,10 @@
         <td>
             @if (((IList<string>)ViewBag.openForChatIds).Contains(item.UserId))
             {
-                @item.Chats.Where(c => c.fromProfileId == item.UserId).Select(c => c.roomId).FirstOrDefault().ToString();
-                <form method="post">
-                    <input type="hidden" name=currentUserId value="@ViewBag.currentUserId">
-                    <input type="hidden" name=profileId value="@item.UserId">
-                    <input type="submit" name=postSubmit value="Join chat">
-                </form>
+                    <form method="post">
+                        <input type="hidden" name=profileId value="@item.UserId">
+                        <input type="submit" name=postSubmit value="Join chat">
+                    </form>
             }
             else
             { 

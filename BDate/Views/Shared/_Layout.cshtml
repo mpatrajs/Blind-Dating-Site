@@ -36,9 +36,6 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Profiles" asp-action="Match">My Matches</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Profiles" asp-action="Chat"><span style="color:cornflowerblue">My Chat</span></a>
-                            </li>
-                            <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Profiles" asp-action="Details" asp-route-id=@User.FindFirstValue(ClaimTypes.NameIdentifier)>My Profile</a>
                             </li>
                         }

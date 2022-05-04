@@ -393,28 +393,29 @@ namespace BDate.Controllers
         {
             var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             ViewBag.currentUserId = currentUserId;
-            // 1) CHANGES DENDIS VIEW YOUR MATCH IS SENT TO LETS CHAT 
-            // Не создавать запись если такая уже есть
-            //var currentChatConnection = _context.
             var createRoomId = profileId + "&" + currentUserId;
-            //Existing roomId for user which joins the room
             var reverseCreateRoomId = currentUserId + "&" + profileId;
+
             var existingRoomId = _context.Chats
                 .Where(c => c.roomId == reverseCreateRoomId)
                 .Where(c => c.toProfileId == currentUserId)
                 .Select(c => c.fromProfileId)
                 .ToListAsync().Result;
+
             var chatRoomIds = await _context.Chats.Select(c => c.roomId).ToListAsync();
+
             var roomIdfromProfile = _context.Chats
                 .Where(c => c.fromProfileId == currentUserId)
                 .Where(c => c.toProfileId == profileId)
                 .Select(c => c.roomId.ToString())
                 .FirstOrDefaultAsync().Result;
+
             var roomIdtoProfile = _context.Chats
                 .Where(c => c.fromProfileId == profileId)
                 .Where(c => c.toProfileId == currentUserId)
                 .Select(c => c.roomId.ToString())
                 .FirstOrDefaultAsync().Result;
+
             // if chat room doesnt exist then create it
             if (!chatRoomIds.Contains(createRoomId) && !existingRoomId.Contains(profileId))
             {
