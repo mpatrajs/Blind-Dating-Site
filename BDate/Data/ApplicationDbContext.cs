@@ -21,6 +21,10 @@ namespace BDate.Data
                 table.fromProfileId,
                 table.toProfileId
             });
+            modelBuilder.Entity<Chat>().HasKey(table => new {
+                table.fromProfileId,
+                table.toProfileId
+            });
             modelBuilder.UseSerialColumns();
             base.OnModelCreating(modelBuilder);
         }
@@ -33,5 +37,6 @@ namespace BDate.Data
         public DbSet<Hobby> Hobbies { get; set; }
         public DbSet<Setting> Settings { get; set; }
         public DbSet<Match> Matches { get; set; }
+        public DbSet<Chat> Chats { get; set; }
     }
 }

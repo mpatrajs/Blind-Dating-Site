@@ -35,5 +35,6 @@ namespace BDate.Models
         public virtual ICollection<Personality> Personalities { get; set; }
         public virtual ICollection<Hobby> Hobbies { get; set; }
         public virtual ICollection<Match> Matches { get; set; }
+        public virtual ICollection<Chat> Chats { get; set; }
     }
 }
