@@ -38,7 +38,7 @@ namespace BDate.Controllers
             }
             else if (await _userManager.IsInRoleAsync(applicationUser, "InActiveUser"))
             {
-                return RedirectToAction("Create", "Profiles", new { id = userId });
+                return RedirectToAction("Create", "Profiles", new { area = "" });
             }
             else if (await _userManager.IsInRoleAsync(applicationUser, "Admin"))
             {

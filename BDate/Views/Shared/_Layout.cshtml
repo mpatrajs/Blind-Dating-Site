@@ -24,7 +24,7 @@
                         @if (this.User.IsInRole("InActiveUser"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Profiles" asp-action="Create"><span style="color:cornflowerblue">Please, Click here to create your profile first</span></a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Profiles" asp-action="Create"><span style="color:cornflowerblue">Please, Create your profile</span></a>
                             </li>
                         }
                         @if (this.User.IsInRole("ActiveUser"))
