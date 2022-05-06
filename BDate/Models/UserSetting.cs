@@ -10,6 +10,7 @@ namespace BDate.Models
     {
         [Key]
         public long ID { get; set; }
+        [Display(Name = "Setting name")]
         public string SettingName { get; set; }
         public Boolean SettingOn { get; set; }
     }
