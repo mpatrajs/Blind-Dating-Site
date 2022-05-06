@@ -42,37 +42,46 @@
             @Html.DisplayFor(model => model.ApplicationUser.Id)
         </dd>
         <div>
-        @if (Model.Personalities.Count() != 0)
-        {
-            <h4>Personalities</h4>
-            foreach (var item in Model.Personalities)
+            @if (Model.Personalities.Count() != 0)
             {
-                <tr>
-                    @Html.HiddenFor(x => item.PersonalityId)
-                    <td>
-                        @Html.TextBoxFor(x => item.PersonalityName, new { @class = "form-control", @readonly = "readonly" })
-                    </td>
-                </tr>
+                <h4>Personalities</h4>
+                foreach (var item in Model.Personalities)
+                {
+                    <tr>
+                        @Html.HiddenFor(x => item.PersonalityId)
+                        <td>
+                            @Html.TextBoxFor(x => item.PersonalityName, new { @class = "form-control", @readonly = "readonly" })
+                        </td>
+                    </tr>
+                }
             }
-        }
         </div>
         <div>
-        @if (Model.Hobbies.Count() != 0)
-        {
-            <h4>Hobbies</h4>
-            foreach (var item in Model.Hobbies)
+            @if (Model.Hobbies.Count() != 0)
             {
-                <tr>
-                    @Html.HiddenFor(x => item.HobbyId)
-                    <td>
-                        @Html.TextBoxFor(x => item.HobbyName, new { @class = "form-control", @readonly = "readonly" })
-                    </td>
-                </tr>
+                <h4>Hobbies</h4>
+                foreach (var item in Model.Hobbies)
+                {
+                    <tr>
+                        @Html.HiddenFor(x => item.HobbyId)
+                        <td>
+                            @Html.TextBoxFor(x => item.HobbyName, new { @class = "form-control", @readonly = "readonly" })
+                        </td>
+                    </tr>
+                }
             }
-        }
         </div>
     </dl>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.UserId">Edit profile</a>
-</div>
+@if (Model.ApplicationUser.Id.Equals(ViewBag.currentUserId))
+{
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.UserId">Edit profile</a>
+    </div>
+}
+else if (!Model.ApplicationUser.Id.Equals(ViewBag.currentUserId))
+{
+    <div>
+        <a asp-action="Index" asp-route-id="">Go back</a>
+    </div>
+}

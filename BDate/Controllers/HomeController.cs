@@ -42,7 +42,7 @@ namespace BDate.Controllers
             }
             else if (await _userManager.IsInRoleAsync(applicationUser, "Admin"))
             {
-                return RedirectToAction("Create", "Roles", new { id = userId });
+                return RedirectToAction("Create", "Roles", new { area = "" });
             }
             else
             {

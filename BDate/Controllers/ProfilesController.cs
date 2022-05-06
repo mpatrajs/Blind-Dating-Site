@@ -109,6 +109,8 @@ namespace BDate.Controllers
                 .Include(p => p.Hobbies)
                 .Include(p => p.ApplicationUser)
                 .FirstOrDefaultAsync(p => p.UserId == id);
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            ViewBag.currentUserId = currentUserId;
 
             if (profile == null)
             {
