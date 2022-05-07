@@ -1,0 +1,62 @@
+﻿@font-face {
+    src: url(../fonts/Poppins-Bold.ttf);
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+}
+h1 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+}
+h2 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+}
+h3 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+}
+h4, h5, h6 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+}
+p {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+}
+a {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+}
+button {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+}
+input {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+}
+select {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+}
+option {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+}
+.btn {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+}
+.btn-link {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+}
+.form-control {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+}
+

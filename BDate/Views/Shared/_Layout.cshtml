@@ -9,26 +9,25 @@
     <title>@ViewData["Title"] - BDate</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/typography.css" />
 </head>
 <body>
     <header>
         <nav class="navbar fixed-top navbar-expand-md navbar-toggleable-md navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">BDate</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">MyMatch</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-md-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1 justify-content-end">
-                        @if (this.User.IsInRole("InActiveUser"))
-                        {
+                        @if (this.User.IsInRole("InActiveUser")) {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Profiles" asp-action="Create"><span style="color:cornflowerblue">Please, Create your profile</span></a>
                             </li>
                         }
-                        @if (this.User.IsInRole("ActiveUser"))
-                        {
+                        @if (this.User.IsInRole("ActiveUser")) {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Profiles" asp-action="Index">Find Match</a>
                             </li>
@@ -39,8 +38,7 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Profiles" asp-action="Details" asp-route-id=@User.FindFirstValue(ClaimTypes.NameIdentifier)>My Profile</a>
                             </li>
                         }
-                        @if (this.User.IsInRole("Admin"))
-                        {
+                        @if (this.User.IsInRole("Admin")) {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Personalities" asp-action="Create">Create Personality</a>
                             </li>
@@ -51,9 +49,8 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Roles" asp-action="Create">Create Role</a>
                             </li>
                         }
+                        <partial name="_LoginPartial" />
                     </ul>
-                    @* Adds 2 buttons (Register Login) on nav-bar + when logged in shows name which links with Identity/Account/Manage*@
-                    <partial name="_LoginPartial" />
                 </div>
             </div>
         </nav>
