@@ -5,83 +5,78 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>Profile</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.FirstName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.FirstName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.LastName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.LastName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayName("Age")
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.DateOfBirth)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Gender)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Gender)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ApplicationUser)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ApplicationUser.Id)
-        </dd>
-        <div>
-            @if (Model.Personalities.Count() != 0)
-            {
-                <h4>Personalities</h4>
-                foreach (var item in Model.Personalities)
-                {
-                    <tr>
-                        @Html.HiddenFor(x => item.PersonalityId)
-                        <td>
-                            @Html.TextBoxFor(x => item.PersonalityName, new { @class = "form-control", @readonly = "readonly" })
-                        </td>
-                    </tr>
+<div class="container-lg">
+    <div class ="row mt-4">
+        <div class="card col-lg-4 offset-lg-3">
+            <div class="card-body">
+                <h3>@Model.FirstName</h3>
+                <h3>@Model.LastName</h3>
+                <h3>@(DateTime.Now.Year - Model.DateOfBirth.Year) years</h3>
+                <h3>@Model.Gender</h3>
+            </div>
+        </div>
+        <div class="card col-lg-3">
+            <div class="card-body">
+                @if (Model.Personalities.Count() != 0) {
+                    <div class="mt-4">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <button class="btn btn-primary btn-w100" type="button" data-toggle="collapse" data-target="#collapseExample1" aria-expanded="false" aria-controls="collapseExample1">
+                                    Show Personalities
+                                </button>
+                            </div>
+                            <div id="collapseExample1" class="panel-collapse collapse">
+                                <div class="list-group">
+                                    @foreach (var item in Model.Personalities) {
+                                        <label class="list-group-item">
+                                            @item.PersonalityName
+                                        </label>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 }
+                @if (Model.Hobbies.Count() != 0) {
+                    <div class="mt-4">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <button class="btn btn-primary btn-w100" type="button" data-toggle="collapse" data-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample2">
+                                    Show Hobbies
+                                </button>
+                            </div>
+                            <div id="collapseExample2" class="panel-collapse collapse">
+                                <div class="list-group">
+                                    @foreach (var item in Model.Hobbies) {
+                                        <label class="list-group-item">
+                                            @item.HobbyName
+                                        </label>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="card col-lg-7 offset-lg-3 text-center">
+            @if (Model.ApplicationUser.Id.Equals(ViewBag.currentUserId)) {
+                <a asp-action="Edit" asp-route-id="@Model.UserId">Edit profile</a>
+            } else if (!Model.ApplicationUser.Id.Equals(ViewBag.currentUserId)) {
+                <a asp-action="Index" asp-route-id="">Go back</a>
             }
         </div>
-        <div>
-            @if (Model.Hobbies.Count() != 0)
-            {
-                <h4>Hobbies</h4>
-                foreach (var item in Model.Hobbies)
-                {
-                    <tr>
-                        @Html.HiddenFor(x => item.HobbyId)
-                        <td>
-                            @Html.TextBoxFor(x => item.HobbyName, new { @class = "form-control", @readonly = "readonly" })
-                        </td>
-                    </tr>
-                }
-            }
-        </div>
-    </dl>
+    </div>
 </div>
-@if (Model.ApplicationUser.Id.Equals(ViewBag.currentUserId))
-{
-    <div>
-        <a asp-action="Edit" asp-route-id="@Model.UserId">Edit profile</a>
-    </div>
-}
-else if (!Model.ApplicationUser.Id.Equals(ViewBag.currentUserId))
-{
-    <div>
-        <a asp-action="Index" asp-route-id="">Go back</a>
-    </div>
-}
+<div>
+<style>
+    .list-group {
+      height:20vh;
+      overflow-y: scroll;
+    }
+    .btn-w100 {
+        width:100%;
+    }
+</style>
