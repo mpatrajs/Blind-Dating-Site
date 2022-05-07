@@ -303,10 +303,14 @@ namespace BDate.Controllers
             {
                 return NotFound();
             }
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            ViewBag.currentUserId = userId;
 
-            var profile = await _context.Profiles
-                .Include(p => p.ApplicationUser)
-                .FirstOrDefaultAsync(m => m.UserId == id);
+            var profile = await _context.Profiles.Where(p => p.UserId == userId)
+            .Include(p => p.Personalities)
+            .Include(p => p.Hobbies)
+            .Include(p => p.ApplicationUser)
+            .FirstOrDefaultAsync(p => p.UserId == id);
 
             if (profile == null)
             {
