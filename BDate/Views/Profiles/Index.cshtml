@@ -4,125 +4,89 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h1>Find Match</h1>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LastName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateOfBirth)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Gender)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Personalities)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Hobbies)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td> 
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            @if (item.Setting.isHiddenLastName == null || item.Setting.isHiddenLastName == true)
-            {
-            <td>
-
-            </td>
-            }
-            else
-            {
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            }
-            @if (item.Setting.isHiddenAge == null || item.Setting.isHiddenAge == true)
-            {
-            <td>
-                
-            </td>
-            }
-            else
-            {
-            <td>
-                @Html.DisplayFor(modelItem => item.DateOfBirth)
-            </td>
-            }
-            <td>
-                @Html.DisplayFor(modelItem => item.Gender)
-            </td>
-            <td>
-            @if (item.Personalities.Count() != 0)
-            {
-                @foreach (var personality in item.Personalities)
-                {     
-                    @Html.DisplayFor(modelItem => personality.PersonalityName)
-                    <br />
-                }
-            }
-            else
-            {
-
-            }
-            </td>
-            <td>
-            @if (item.Hobbies.Count() != 0)
-            {
-                @foreach (var hobby in item.Hobbies)
-                {     
-                    @Html.DisplayFor(modelItem => hobby.HobbyName)
-                    <br />
-                }
-            }
-            else
-            {
-                <td>
-                </td>
-            }
-            </td>
-        <td>
-            @*Checks if logged in user already has pressed match for related user*@
-            <div>
-            @if (((IList<string>)ViewBag.matchesOfCureentUser).Contains(item.UserId)) {
-                <div>
-                    <input type="submit" name=postSubmit value="Your match is sent🥰" disabled>
-                </div>
-            } else if (((IList<string>)ViewBag.profileIdOfAlreadyMatchedId).Contains(item.UserId)) {
-                <div>
-                    <input type="submit" name=postSubmit value="They matched you😍" disabled>
-                </div>
-            } else {
-                <div>
-                    <form method="post">
-                        <input type="hidden" name=profileId value="@item.UserId">
-                        <input type="submit" name=postSubmit value="Send match😘">
-                    </form>
-                </div>
-            }
-            <p>
-                <a asp-action="Details" asp-route-id="@item.UserId">More info</a>
-            </p>
-            </div>
-        </td>
-        </tr>
-        }
-            </tbody>
-        </table>
+<div class="container-lg overflow-hidden">
+    <div class="row justify-content-lg-center">
+        <div class="col-lg-6 text-center">
+            <h3>Find Match</h3>
+        </div>
+    </div>
+    <div class="row mt-4">
+        @foreach (var item in Model) {
+            <div class="col-md-4 mt-4">                <div class="card" style="width: 100%;">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between">
+                            <h5 class="card-title">@item.FirstName</h5>
+                            <h5 class="card-title">@(DateTime.Now.Year - item.DateOfBirth.Year)</h5> 
+                        </div>
+                    </div>
+                    <div class="card-body d-flex justify-content-between">
+                        @if (item.Personalities.Count() != 0) {
+                            <div class="col-lg-12 mb-4">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <button class="btn btn-primary btn-w100" type="button" data-toggle="collapse" data-target="#@item.ApplicationUser.Email.Replace(".", "").Replace("@","p")" aria-expanded="false" aria-controls="@item.ApplicationUser.Email.Replace(".", "").Replace("@","p")">
+                                            Personalities
+                                        </button>
+                                    </div>
+                                    <div id="@item.ApplicationUser.Email.Replace(".", "").Replace("@","p")" class="panel-collapse collapse">
+                                        <div class="list-group">
+                                            @foreach (var personality in item.Personalities.Take(3)) {
+                                                <label class="list-group-item">
+                                                    @personality.PersonalityName
+                                                </label>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div class="card-body d-flex justify-content-between">
+                        @if (item.Hobbies.Count() != 0) {
+                            <div class="col-lg-12 mb-4">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <button class="btn btn-primary btn-w100" type="button" data-toggle="collapse" data-target="#@item.ApplicationUser.Email.Replace(".", "").Replace("@","h")" aria-expanded="false" aria-controls="@item.ApplicationUser.Email.Replace(".", "").Replace("@","h")">
+                                            Hobbies
+                                        </button>
+                                    </div>
+                                    <div id="@item.ApplicationUser.Email.Replace(".", "").Replace("@","h")" class="panel-collapse collapse">
+                                        <div class="list-group">
+                                            @foreach (var hobby in item.Hobbies.Take(3)) {
+                                                <label class="list-group-item">
+                                                    @hobby.HobbyName
+                                                </label>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div class="card-body d-flex justify-content-center">
+                        <div>
+                            <a asp-action="Details" asp-route-id="@item.UserId">More info</a>
+                        </div>
+                        </div>
+                        <div class="card-footer d-flex justify-content-center">
+                        @if (((IList<string>)ViewBag.matchesOfCureentUser).Contains(item.UserId)) {
+                            <input type="submit" name=postSubmit value="Your match is sent🥰" disabled>
+                        } else if (((IList<string>)ViewBag.profileIdOfAlreadyMatchedId).Contains(item.UserId)) {
+                            <input type="submit" name=postSubmit value="They matched you😍" disabled>
+                        } else {
+                            <form method="post">
+                                <input type="hidden" name=profileId value="@item.UserId">
+                                <input type="submit" name=postSubmit value="Send match😘">
+                            </form>
+                        }
+                    </div>
+                </div>            </div>        }    </div>
+</div>
 <style>
     input:disabled {
         color: lightcoral;
+    }
+    .btn-w100 {
+        width:100%;
     }
 </style>
