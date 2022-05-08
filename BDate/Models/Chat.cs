@@ -7,14 +7,15 @@ using System.Threading.Tasks;
 
 namespace BDate.Models
 {
-    public class Setting
+    public class Chat
     {
-        [ForeignKey("Profile")]
-        public string SettingId { get; set; }
-        [Display( Name = "Hide age")]
-        public bool isHiddenAge { get; set; }
-        [Display(Name = "Hide Last name")]
-        public bool isHiddenLastName { get; set; }
+        [Key, ForeignKey("Profile")]
+        [InverseProperty("Chats")]
+        public string fromProfileId { get; set; }
+        [Key]
+        [InverseProperty("Chats")]
+        public string toProfileId { get; set; }
+        public string roomId { get; set; }
         public virtual Profile Profile { get; set; }
     }
 }

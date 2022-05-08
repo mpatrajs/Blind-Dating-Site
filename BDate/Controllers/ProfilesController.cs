@@ -57,7 +57,6 @@ namespace BDate.Controllers
                 .Select(p => p.fromProfileId)
                 .ToListAsync();
 
-            //var setting = await _context.Settings.Select(s => s.)
             ViewBag.currentUserId = userId;
             ViewBag.matchesOfCureentUser = matchesOfCureentUser;
             ViewBag.profileIdOfAlreadyMatchedId = profileIdOfAlreadyMatchedId;
@@ -110,6 +109,8 @@ namespace BDate.Controllers
                 .Include(p => p.Hobbies)
                 .Include(p => p.ApplicationUser)
                 .FirstOrDefaultAsync(p => p.UserId == id);
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            ViewBag.currentUserId = currentUserId;
 
             if (profile == null)
             {
@@ -168,10 +169,10 @@ namespace BDate.Controllers
                     profile.Hobbies.Add(await hobby);
                 }
 
-                //Changing current user`s isActive field to true (AspNetUsers table)
-                //Adding ActiveUser Role to user who created profile
+                //Changing users role from InActiveUser to ActiveUser
                 var user = _userManager.FindByIdAsync(userId);
                 await _userManager.AddToRoleAsync(await user, "ActiveUser");
+                await _userManager.RemoveFromRoleAsync(await user, "InActiveUser");
                 await _userManager.UpdateAsync(await user);
 
                 //Add one to one with Setting
@@ -210,7 +211,8 @@ namespace BDate.Controllers
                 return NotFound();
             }
 
-            var profile = _context.Profiles
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var profile = _context.Profiles.Where(p => p.UserId == userId)
                 .Include(p => p.Personalities)
                 .Include(p => p.Hobbies)
                 .SingleOrDefault(a => a.UserId == id);
@@ -248,7 +250,8 @@ namespace BDate.Controllers
                 {
                    _context.Update(profile);
 
-                    var profileOnGet = _context.Profiles
+                    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    var profileOnGet = _context.Profiles.Where(p => p.UserId == userId)
                         .Include(p => p.Personalities)
                         .Include(p => p.Hobbies)
                         .SingleOrDefault(a => a.UserId == id);
@@ -300,10 +303,14 @@ namespace BDate.Controllers
             {
                 return NotFound();
             }
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            ViewBag.currentUserId = userId;
 
-            var profile = await _context.Profiles
-                .Include(p => p.ApplicationUser)
-                .FirstOrDefaultAsync(m => m.UserId == id);
+            var profile = await _context.Profiles.Where(p => p.UserId == userId)
+            .Include(p => p.Personalities)
+            .Include(p => p.Hobbies)
+            .Include(p => p.ApplicationUser)
+            .FirstOrDefaultAsync(p => p.UserId == id);
 
             if (profile == null)
             {
@@ -321,9 +328,11 @@ namespace BDate.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user = _userManager.FindByIdAsync(userId);
+            //Changing users role from ActiveUser to InActiveUser
             await _userManager.RemoveFromRoleAsync(await user, "ActiveUser");
-
+            await _userManager.AddToRoleAsync(await user, "InActiveUser");
             await _userManager.UpdateAsync(await user);
+
             // await _userManager.RemoveFromRoleAsync();
             var profile = await _context.Profiles.FindAsync(id);
             _context.Profiles.Remove(profile);
@@ -355,17 +364,106 @@ namespace BDate.Controllers
                 .Include(p => p.Hobbies)
                 .Include(p => p.Matches)
                 .Include(p => p.Setting)
+                .Include(p => p.Chats)
                 .Include(p => p.ApplicationUser);
 
+            // Profile Ids to whom current user sent a match
+            var matchesOfCureentUser = await _context.Matches
+                .Where(m => m.fromProfileId == currentUserId)
+                .Select(m => m.toProfileId)
+                .ToListAsync();
+
+            // Profile Ids which sent to current user match offer
             var profileIdOfAlreadyMatchedId = await _context.Matches
                 .Where(p => p.toProfileId == currentUserId)
                 .Select(p => p.fromProfileId)
                 .ToListAsync();
 
+            // Profile Ids which STARTED chat with currentId
+             var openForChatIds = await _context.Chats
+                .Where(c => c.toProfileId == currentUserId) //lets chat was sent to profile id and this id now need to join chat
+                .Select(c => c.fromProfileId) //select all ids which pressed lets chat button with this id
+                .ToListAsync();
+
             ViewBag.currentUserId = currentUserId;
             ViewBag.profileIdOfAlreadyMatchedId = profileIdOfAlreadyMatchedId;
+            ViewBag.matchesOfCureentUser = matchesOfCureentUser;
+            ViewBag.openForChatIds = openForChatIds;
 
             return View(await applicationDbContext.ToListAsync());
+        }
+        // POST for LETS CHAT button
+        [Authorize(Roles = "ActiveUser")]
+        [HttpPost]
+        public async Task<IActionResult> Match(String profileId)
+        {
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            ViewBag.currentUserId = currentUserId;
+            var createRoomId = profileId + "&" + currentUserId;
+            var reverseCreateRoomId = currentUserId + "&" + profileId;
+
+            var existingRoomId = _context.Chats
+                .Where(c => c.roomId == reverseCreateRoomId)
+                .Where(c => c.toProfileId == currentUserId)
+                .Select(c => c.fromProfileId)
+                .ToListAsync().Result;
+
+            var chatRoomIds = await _context.Chats.Select(c => c.roomId).ToListAsync();
+
+            var roomIdfromProfile = _context.Chats
+                .Where(c => c.fromProfileId == currentUserId)
+                .Where(c => c.toProfileId == profileId)
+                .Select(c => c.roomId.ToString())
+                .FirstOrDefaultAsync().Result;
+
+            var roomIdtoProfile = _context.Chats
+                .Where(c => c.fromProfileId == profileId)
+                .Where(c => c.toProfileId == currentUserId)
+                .Select(c => c.roomId.ToString())
+                .FirstOrDefaultAsync().Result;
+
+            // if chat room doesnt exist then create it
+            if (!chatRoomIds.Contains(createRoomId) && !existingRoomId.Contains(profileId))
+            {
+                var chat = new Chat
+                {
+                    fromProfileId = currentUserId,
+                    toProfileId = profileId,
+                    roomId = createRoomId
+                };
+                _context.Add(chat);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Chat", "Profiles", new { roomId = createRoomId });
+            }
+            else if (chatRoomIds.Contains(createRoomId) && roomIdfromProfile != null)
+            {
+                return RedirectToAction("Chat", "Profiles", new { roomId = (String)roomIdfromProfile.ToString() });
+            }
+            else if (chatRoomIds.Contains(reverseCreateRoomId) && roomIdtoProfile != null)
+            {
+                return RedirectToAction("Chat", "Profiles", new { roomId = (String)roomIdtoProfile.ToString() });
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [Authorize(Roles = "ActiveUser")]
+        public async Task<IActionResult> Chat(string roomId)
+        {
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (roomId != null && roomId.Contains(currentUserId))
+            {
+                var profile = _context.Profiles
+                    .Where(p => p.UserId == currentUserId);
+
+                ViewBag.currentUserId = currentUserId;
+                ViewBag.roomId = roomId;
+                ViewBag.currentUserName = profile.Select(p => p.FirstName).FirstOrDefault();
+                return View();
+            }
+            return NotFound();
         }
     }
 }

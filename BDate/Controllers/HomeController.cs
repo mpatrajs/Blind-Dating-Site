@@ -38,7 +38,11 @@ namespace BDate.Controllers
             }
             else if (await _userManager.IsInRoleAsync(applicationUser, "InActiveUser"))
             {
-                return RedirectToAction("Create", "Profiles", new { id = userId });
+                return RedirectToAction("Create", "Profiles", new { area = "" });
+            }
+            else if (await _userManager.IsInRoleAsync(applicationUser, "Admin"))
+            {
+                return RedirectToAction("Create", "Roles", new { area = "" });
             }
             else
             {
@@ -46,16 +50,7 @@ namespace BDate.Controllers
             }
         }
 
-        [HttpPost]
-        public async Task<IActionResult> IndexAsync()
-        {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = _userManager.FindByIdAsync(userId);
-            
-            await _userManager.UpdateAsync(await user);
-            return RedirectToAction("Index", "Home");
-        }
-
+        [Authorize(Roles = "ActiveUser")]
         public IActionResult Privacy()
         {
             return View();

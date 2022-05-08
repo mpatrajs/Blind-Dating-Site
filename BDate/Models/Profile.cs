@@ -25,6 +25,7 @@ namespace BDate.Models
         public string LastName { get; set; }
         [Required]
         [DataType(DataType.Date)]
+        [Display(Name = "Date of birth")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime DateOfBirth { get; set; }
         [Required]
@@ -35,5 +36,6 @@ namespace BDate.Models
         public virtual ICollection<Personality> Personalities { get; set; }
         public virtual ICollection<Hobby> Hobbies { get; set; }
         public virtual ICollection<Match> Matches { get; set; }
+        public virtual ICollection<Chat> Chats { get; set; }
     }
 }

@@ -5,104 +5,108 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>My Matches</h1>
-
-<p>
-    <a asp-action="Details" asp-route-id="@ViewBag.currentUserId">My profile</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LastName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateOfBirth)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Gender)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Personalities)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Hobbies)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-    if (((IList<string>)ViewBag.profileIdOfAlreadyMatchedId).Contains(item.UserId))
-    { 
-        <tr>
-            <td> 
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            @if (item.Setting.isHiddenLastName == null || item.Setting.isHiddenLastName == true)
-            {
-            <td>
-
-            </td>
-            }
-            else
-            { 
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            }
-            @if (item.Setting.isHiddenAge == null || item.Setting.isHiddenAge == true)
-            {
-            <td>
-
-            </td>
-            }
-            else
-            { 
-            <td>
-                @Html.DisplayFor(modelItem => item.DateOfBirth)
-            </td>
-            }
-            <td>
-                @Html.DisplayFor(modelItem => item.Gender)
-            </td>
-            <td>
-            @if (item.Personalities.Count() != 0)
-            {
-                @foreach (var personality in item.Personalities)
-                {     
-                    @Html.DisplayFor(modelItem => personality.PersonalityName)
-                    <br />
+<div class="container-lg">
+    <!-- List group -->
+    <div class="row justify-content-lg-center">
+        <div class="col-lg-12 text-center">
+            <div class="list-group list-group-horizontal" id="myList" role="tablist">
+              <a class="list-group-item list-group-item-action active" data-toggle="list" href="#home" role="tab">You Matched (Lets chat)</a>
+              <a class="list-group-item list-group-item-action" data-toggle="list" href="#profile" role="tab">Matched you (join chat)</a>
+              <a class="list-group-item list-group-item-action" data-toggle="list" href="#messages" role="tab">Your sent matches</a>
+            </div>
+        </div>
+    </div>
+    <div class="tab-content">
+        <!-- Tab panes -->
+        <div class="tab-pane fade show active" id="home" role="tabpanel">
+            <div class="row tab-content">
+                @foreach (var item in Model) {
+                    @if (((IList<string>)ViewBag.profileIdOfAlreadyMatchedId).Contains(item.UserId)) {
+                        <div class="col-lg-3 mt-4">
+                            <div class="card" style="width: 100%;">
+                                <div class="card-body">
+                                    <h5 class="card-title">@item.FirstName</h5>
+                                    @if (item.Setting.isHiddenLastName == false) {
+                                        <h5 class="card-title">@item.LastName</h5>
+                                    } else {
+                                        <h5 class="card-title">🙈</h5>
+                                    }
+                                    <p>
+                                        <a asp-action="Details" asp-route-id="@item.UserId">More info</a>
+                                    </p>
+                                    <form method="post">
+                                        <input type="hidden" name=profileId value="@item.UserId">
+                                        <button type="submit" class="btn btn-primary">Lets chat</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    } else if (((IList<string>)ViewBag.profileIdOfAlreadyMatchedId).Count()==0) {
+                        <h4>Currently, no one has matched you 😭</h4>
+                        break;
+                    }
                 }
-            }
-            else
-            {
+            </div>
+        </div>
+        <div class="tab-pane fade" id="profile" role="tabpanel">
+            <div class="row tab-content">
+                @foreach (var item in Model) {
+                    @if (((IList<string>)ViewBag.openForChatIds).Contains(item.UserId)) {
+                        <div class="col-lg-3 mt-4">
+                            <div class="card" style="width: 100%;">
+                                <div class="card-body">
+                                    <h5 class="card-title">@item.FirstName</h5>
+                                    @if (item.Setting.isHiddenLastName == false) {
+                                        <h5 class="card-title">@item.LastName</h5>
+                                    } else {
+                                        <h5 class="card-title">🙈</h5>
+                                    }
+                                    <p>
+                                        <a asp-action="Details" asp-route-id="@item.UserId">More info</a>
+                                    </p>
+                                    <form method="post">
+                                        <input type="hidden" name=profileId value="@item.UserId">
+                                        <button type="submit" class="btn btn-primary">Join chat</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    } else if (((IList<string>)ViewBag.matchesOfCureentUser).Count()==0) {
+                        <h4>Currently, you have not matched anyone 😭</h4>
+                        break;
+                    }
+                }            </div>
+        </div>
+        <div class="tab-pane fade" id="messages" role="tabpanel">
+            <div class="row tab-content">
+                @foreach (var item in Model) {
+                    @if (((IList<string>)ViewBag.matchesOfCureentUser).Contains(item.UserId)
+                                && !((IList<string>)ViewBag.openForChatIds).Contains(item.UserId)) {
+                        <div class="col-lg-3 mt-4">
+                            <div class="card" style="width: 100%;">
+                                <div class="card-body">
+                                    <h5 class="card-title">@item.FirstName</h5>
+                                    @if (item.Setting.isHiddenLastName == false) {
+                                        <h5 class="card-title">@item.LastName</h5>
+                                    } else {
+                                        <h5 class="card-title">🙈</h5>
+                                    }
+                                    <p>
+                                        <a asp-action="Details" asp-route-id="@item.UserId">More info</a>
+                                    </p>
+                                    <button type="submit" class="btn btn-primary disabled">Your match is sent🥰</button>
+                                </div>
+                            </div>
+                        </div>
+                    } else if (((IList<string>)ViewBag.matchesOfCureentUser).Count()==0) {
+                        <h4>Currently, you have not matched anyone 😭</h4>
+                        break;
+                    }
+                }            </div>
+        </div>  
+    </div>
+</div>
 
-            }
-            </td>
-            <td>
-            @if (item.Hobbies.Count() != 0)
-            {
-                @foreach (var hobby in item.Hobbies)
-                {     
-                    @Html.DisplayFor(modelItem => hobby.HobbyName)
-                    <br />
-                }
-            }
-            else
-            {
-                <td>
-                </td>
-            }
-            </td>
-        </tr>
-        }
-    }
-            </tbody>
-        </table>
 <style>
     input:disabled {
         color: lightcoral;

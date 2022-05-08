@@ -7,43 +7,67 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - BDate</title>
+    <link rel="stylesheet" href="~/css/background-video.css" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/typography.css" />
+    <link rel="stylesheet" href="~/css/color-palette.css" />
+    <link rel="stylesheet" href="~/css/animations.css" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar fixed-top navbar-expand-md navbar-toggleable-md navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">BDate</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><span class="color-mulberry">My</span>Match</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <div class="navbar-collapse collapse d-md-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1 justify-content-end">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Profiles" asp-action="Index">Find Match</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Profiles" asp-action="Match">My Matches</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Profiles" asp-action="Details" asp-route-id=@User.FindFirstValue(ClaimTypes.NameIdentifier)>My Profile</a>
-                        </li>
+                        @if (this.User.IsInRole("InActiveUser")) {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Profiles" asp-action="Create">Please, Create your profile first</a>
+                            </li>
+                        }
+                        @if (this.User.IsInRole("ActiveUser")) {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Profiles" asp-action="Index">Find Match</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Profiles" asp-action="Match">My Matches</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Profiles" asp-action="Details" asp-route-id=@User.FindFirstValue(ClaimTypes.NameIdentifier)>My Profile</a>
+                            </li>
+                        }
+                        @if (this.User.IsInRole("Admin")) {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Personalities" asp-action="Create">Create Personality</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Hobbies" asp-action="Create">Create Hobby</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Roles" asp-action="Create">Create Role</a>
+                            </li>
+                        }
+                        <partial name="_LoginPartial" />
                     </ul>
-                    @* Adds 2 buttons (Register Login) on nav-bar + when logged in shows name which links with Identity/Account/Manage*@
-                    <partial name="_LoginPartial" />
                 </div>
             </div>
         </nav>
     </header>
+    <video id="videoBG" poster="~/pictures/poster.png" autoplay muted loop>
+        <source src="~/video/yt1s.com - Purple Sunset Alone in the Roof 4K Free Screensaver Live Wallpaper Relaxing  Windows 10 11 loop_720pFHR.mp4" type="video/mp4">
+    </video>
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="footer text-muted">
         <div class="container">
             &copy; 2022 - BDate - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
@@ -61,5 +85,8 @@
 
     .btn-full-space {
         width: 100%;
+    }
+    main {
+        padding-top: 70px;
     }
 </style>

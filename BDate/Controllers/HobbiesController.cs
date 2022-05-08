@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BDate.Data;
 using BDate.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BDate.Controllers
 {
@@ -20,12 +21,14 @@ namespace BDate.Controllers
         }
 
         // GET: Hobbies
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Hobbies.ToListAsync());
         }
 
         // GET: Hobbies/Details/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
@@ -44,6 +47,7 @@ namespace BDate.Controllers
         }
 
         // GET: Hobbies/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
@@ -52,6 +56,7 @@ namespace BDate.Controllers
         // POST: Hobbies/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("HobbyId,HobbyName")] Hobby hobby)
@@ -66,6 +71,7 @@ namespace BDate.Controllers
         }
 
         // GET: Hobbies/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -84,6 +90,7 @@ namespace BDate.Controllers
         // POST: Hobbies/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, [Bind("HobbyId,HobbyName")] Hobby hobby)
@@ -117,6 +124,7 @@ namespace BDate.Controllers
         }
 
         // GET: Hobbies/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -135,6 +143,7 @@ namespace BDate.Controllers
         }
 
         // POST: Hobbies/Delete/5
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)

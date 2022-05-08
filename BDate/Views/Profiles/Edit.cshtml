@@ -4,103 +4,120 @@
     ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h1>Edit</h1>
-
-<h4>Profile</h4>
-<hr />
-<div class="row">
-    <div class="col-md-12">
-        <form asp-action="Edit">
-            <div class="col-md-6">
+<div class="container-lg">
+    <form asp-action="Edit">
+        <div class="row justify-content-lg-center">
+            <div class="card p-4 col-lg-6 text-center">
+                <h3>Update Profile</h3>
+            </div>
+        </div>
+        <div class="row justify-content-lg-center mt-4">
+            <div class="card p-4 col-lg-6 mt-4">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="UserId" />
-                <div class="form-group">
-                    <label asp-for="FirstName" class="control-label"></label>
-                    <input asp-for="FirstName" class="form-control" />
+                <div class="form-group row">
+                    <label asp-for="FirstName" class="control-label col-lg-4 col-form-label"></label>
+                    <div class="col-lg-8">
+                        <input asp-for="FirstName" class="form-control" />
+                    </div>
                     <span asp-validation-for="FirstName" class="text-danger"></span>
                 </div>
-                <div class="form-group">
-                    <label asp-for="LastName" class="control-label"></label>
-                    <input asp-for="LastName" class="form-control" />
+                <div class="form-group row">
+                    <label asp-for="LastName" class="control-label col-lg-4 col-form-label"></label>
+                    <div class="col-lg-8">
+                        <input asp-for="LastName" class="form-control" />
+                    </div>
                     <span asp-validation-for="LastName" class="text-danger"></span>
                 </div>
-                <div class="form-group">
-                    <label asp-for="DateOfBirth" class="control-label"></label>
-                    <input asp-for="DateOfBirth" class="form-control" />
+                <div class="form-group row">
+                    <label asp-for="DateOfBirth" class="control-label col-lg-4 col-form-label"></label>
+                    <div class="col-lg-8">
+                        <input asp-for="DateOfBirth" class="form-control" />
+                    </div>
                     <span asp-validation-for="DateOfBirth" class="text-danger"></span>
                 </div>
-                <div class="form-group">
-                    <label asp-for="Gender" class="control-label"></label>
-                    @Html.DropDownListFor(m => m.Gender, new List<SelectListItem>
-                    { new SelectListItem{Text="Male", Value="Male"},
-                    new SelectListItem{Text="Female", Value="Female"}, new SelectListItem{Text="Pudge", Value="pudge"}}, "Please select")
+                <div class="form-group row">
+                    <label asp-for="Gender" class="control-label col-lg-4 col-form-label"></label>
+                    <div class="col-lg-8">
+                        @Html.DropDownListFor(m => m.Gender, 
+                        new List<SelectListItem>
+                        { 
+                            new SelectListItem{Text="Male", Value="Male"},
+                            new SelectListItem{Text="Female", Value="Female"}
+                        }, "Please select", new {@class = "form-control"})
+                    </div>
                     <span asp-validation-for="Gender" class="text-danger"></span>
                 </div>
-                <div class="form-group">
-                    <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+            @if (ViewBag.Personality != null) {
+                <div class="card p-4 col-lg-3 mt-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <button class="btn btn-primary btn-w100" type="button" data-toggle="collapse" data-target="#collapseExample1" aria-expanded="false" aria-controls="collapseExample1">
+                                Add Personality🤡
+                            </button>
+                        </div>
+                        <div id="collapseExample1" class="panel-collapse collapse">
+                            <div class="list-group">
+                                @foreach (var item in ViewBag.Personality) {
+                                    <label class="list-group-item">
+                                        @if (Model.Personalities.ToHashSet().Contains(item) == false) {
+                                            <input class="form-check-input me-1" type="checkbox" name=checkedPersonalityValues value="@item.PersonalityId">
+                                        } else if (Model.Personalities.ToHashSet().Contains(item) == true) {
+                                            <input class="form-check-input me-1" type="checkbox" name=checkedPersonalityValues value="@item.PersonalityId" checked>
+                                        }
+                                        @item.PersonalityName
+                                    </label>
+                                }
+                            </div>
+                        </div>
+                    </div>
                 </div>
+            }
+            @if (ViewBag.Hobby != null) {
+                <div class="card p-4 col-lg-3 mt-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <button class="btn btn-primary btn-w100" type="button" data-toggle="collapse" data-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample2">
+                                Add Hobbies🧗‍♀️
+                            </button>
+                        </div>
+                        <div id="collapseExample2" class="panel-collapse collapse">
+                            <div class="list-group">
+                                @foreach (var item in ViewBag.Hobby) {
+                                    <label class="list-group-item">
+                                        @if (Model.Hobbies.ToHashSet().Contains(item) == false) {
+                                            <input class="form-check-input me-1" type="checkbox" name=checkedHobbyValues value="@item.HobbyId">
+                                        } else if (Model.Hobbies.ToHashSet().Contains(item) == true) {
+                                            <input class="form-check-input me-1" type="checkbox" name=checkedHobbyValues value="@item.HobbyId" checked>
+                                        }
+                                        @item.HobbyName
+                                    </label>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="row card p-4 justify-content-lg-center mt-4">
+            <div class="d-flex justify-content-center btn-w100 text-center">
+                <input type="submit" value="Update Profile" class="btn btn-primary" />
             </div>
-            <div class="col-md-3">
-                @if (ViewBag.Personality != null)
-                {
-                    <h4>Personalities</h4>
-                    foreach (var item in ViewBag.Personality)
-                    {
-                        @*IF Profile HAS PERSONALITY FROM OVERALL PULL (item ViewBag.Personality)*@
-                        @*Model.Personalities means Profile.Personalities => Personalities linked with Profile*@
-                        @Model.Personalities.ToHashSet().Contains(item);
-                        if (@Model.Personalities.ToHashSet().Contains(item) == true)
-                        {
-                            <div class="form-group">
-                                <input id="scales" type="checkbox" name=checkedPersonalityValues value="@item.PersonalityId" checked>
-                                <label for="@item.PersonalityName">@item.PersonalityName</label>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="form-group">
-                                <input id="scales" type="checkbox" name=checkedPersonalityValues value="@item.PersonalityId">
-                                <label for="@item.PersonalityName">@item.PersonalityName</label>
-                            </div>
-                        }
-                    }
-                }
+            <div class="d-flex justify-content-center btn-w100 text-center">
+                <a asp-controller="Settings" asp-action="Edit" asp-route-id="@Model.UserId">Profile settings</a> |
+                <a asp-controller="Profiles" asp-action="Delete" asp-route-id="@Model.UserId">Delete Profile</a>
             </div>
-            <div class="col-md-3">
-                @if (ViewBag.Hobby != null)
-                {
-                    <h4>Hobbies</h4>
-                    foreach (var item in ViewBag.Hobby)
-                    {
-                        @*IF Profile HAS PERSONALITY FROM OVERALL PULL (item ViewBag.Personality)*@
-                        @*Model.Personalities means Profile.Personalities => Personalities linked with Profile*@
-                        @Model.Hobbies.ToHashSet().Contains(item);
-                        if (@Model.Hobbies.ToHashSet().Contains(item) == true)
-                        {
-                            <div class="form-group">
-                                <input id="scales" type="checkbox" name=checkedHobbyValues value="@item.HobbyId" checked>
-                                <label for="@item.HobbyName">@item.HobbyName</label>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="form-group">
-                                <input id="scales" type="checkbox" name=checkedHobbyValues value="@item.HobbyId">
-                                <label for="@item.HobbyName">@item.HobbyName</label>
-                            </div>
-                        }
-                    }
-                }
-            </div>
-        </form>
-        <a asp-controller="Settings" asp-action="Edit" asp-route-id="@Model.UserId">Profile settings</a> |
-        <a asp-controller="Profiles" asp-action="Delete" asp-route-id="@Model.UserId">Delete Profile</a>
-    </div>
+        </div>
+    </form>
 </div>
 <style>
-    form {
-        display:flex
+    .list-group {
+      height:20vh;
+      overflow-y: scroll;
+    }
+    .btn-w100 {
+        width:100%;
     }
 </style>
 @section Scripts {
