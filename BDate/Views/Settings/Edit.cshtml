@@ -9,34 +9,36 @@
     <form asp-action="Edit">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="SettingId" />
-        <div class="col-lg-6 offset-lg-3">
-            <h1 class="display-4">Profile settings</h1>
-        </div>
-        <div class="col-lg-6 offset-lg-3">
-            <div class="text-left mt-4">
-                <h3>Privacy</h3>
+        <div class="row card p-4 justify-content-lg-center mt-4">
+            <div class="col-lg-6 offset-lg-3 d-flex justify-content-center">
+                <h1 class="display-4">Profile settings</h1>
             </div>
-        </div>
-        <div class="col-lg-6 offset-lg-3">
-            <div class="custom-control custom-switch custom-switch-md">
-                <input type="checkbox" class="custom-control-input" id="customSwitch1" asp-for="isHiddenAge">
-                <label class="custom-control-label align-middle h5 font-weight-normal" for="customSwitch1">Hide age</label>
-            </div>
-        </div>
-        <div class="col-lg-6 offset-lg-3">
-            <div class="custom-control custom-switch custom-switch-md">
-                <input type="checkbox" class="custom-control-input" id="customSwitch2" asp-for="isHiddenLastName">
-                <label class="custom-control-label align-middle h5 font-weight-normal" for="customSwitch2">Hide Last name</label>
-            </div>
-        </div>
-        <div class="col-lg-6 offset-lg-3">
-            <div class="btn-toolbar pl-0">
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Save</button>
+            <div class="col-lg-6 offset-lg-3">
+                <div class="text-left mt-4">
+                    <h3>Privacy</h3>
                 </div>
             </div>
-            <div>
-                <a asp-controller="Profiles" asp-action="Edit" asp-route-id="@Model.SettingId">Back to Profile</a>
+            <div class="col-lg-6 offset-lg-3">
+                <div class="custom-control custom-switch custom-switch-md">
+                    <input type="checkbox" class="custom-control-input" id="customSwitch1" asp-for="isHiddenAge">
+                    <label class="custom-control-label align-middle h5 font-weight-normal" for="customSwitch1">Hide age</label>
+                </div>
+            </div>
+            <div class="col-lg-6 offset-lg-3">
+                <div class="custom-control custom-switch custom-switch-md">
+                    <input type="checkbox" class="custom-control-input" id="customSwitch2" asp-for="isHiddenLastName">
+                    <label class="custom-control-label align-middle h5 font-weight-normal" for="customSwitch2">Hide Last name</label>
+                </div>
+            </div>
+            <div class="col-lg-6 offset-lg-3">
+                <div class="btn-toolbar pl-0 d-flex justify-content-center">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <a asp-controller="Profiles" asp-action="Edit" asp-route-id="@Model.SettingId">Back to Profile</a>
+                </div>
             </div>
         </div>
     </form>

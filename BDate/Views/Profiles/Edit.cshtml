@@ -7,12 +7,12 @@
 <div class="container-lg">
     <form asp-action="Edit">
         <div class="row justify-content-lg-center">
-            <div class="col-lg-6 text-center">
+            <div class="card col-lg-6 text-center">
                 <h3>Update Profile</h3>
             </div>
         </div>
         <div class="row justify-content-lg-center mt-4">
-            <div class="col-lg-6 mt-4">
+            <div class="card p-4 col-lg-6 mt-4">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="UserId" />
                 <div class="form-group row">
@@ -50,7 +50,7 @@
                 </div>
             </div>
             @if (ViewBag.Personality != null) {
-                <div class="col-lg-3 mt-4">
+                <div class="card p-4 col-lg-3 mt-4">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <button class="btn btn-primary btn-w100" type="button" data-toggle="collapse" data-target="#collapseExample1" aria-expanded="false" aria-controls="collapseExample1">
@@ -75,7 +75,7 @@
                 </div>
             }
             @if (ViewBag.Hobby != null) {
-                <div class="col-lg-3 mt-4">
+                <div class="card p-4 col-lg-3 mt-4">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <button class="btn btn-primary btn-w100" type="button" data-toggle="collapse" data-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample2">
@@ -100,14 +100,16 @@
                 </div>
             }
         </div>
-        <div class="row justify-content-lg-center mt-4">
-            <div class="col-lg-1 d-flex justify-content-center btn-w100">
+        <div class="row card p-4 justify-content-lg-center mt-4">
+            <div class="d-flex justify-content-center btn-w100 text-center">
                 <input type="submit" value="Update Profile" class="btn btn-primary" />
+            </div>
+            <div class="d-flex justify-content-center btn-w100 text-center">
+                <a asp-controller="Settings" asp-action="Edit" asp-route-id="@Model.UserId">Profile settings</a> |
+                <a asp-controller="Profiles" asp-action="Delete" asp-route-id="@Model.UserId">Delete Profile</a>
             </div>
         </div>
     </form>
-    <a asp-controller="Settings" asp-action="Edit" asp-route-id="@Model.UserId">Profile settings</a> |
-    <a asp-controller="Profiles" asp-action="Delete" asp-route-id="@Model.UserId">Delete Profile</a>
 </div>
 <style>
     .list-group {

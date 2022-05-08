@@ -26,29 +26,29 @@
                     <ul class="navbar-nav flex-grow-1 justify-content-end">
                         @if (this.User.IsInRole("InActiveUser")) {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Profiles" asp-action="Create"><span style="color:cornflowerblue">Please, Create your profile</span></a>
+                                <a class="nav-link" asp-area="" asp-controller="Profiles" asp-action="Create"><span style="color:cornflowerblue">Please, Create your profile</span></a>
                             </li>
                         }
                         @if (this.User.IsInRole("ActiveUser")) {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Profiles" asp-action="Index">Find Match</a>
+                                <a class="nav-link" asp-area="" asp-controller="Profiles" asp-action="Index">Find Match</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Profiles" asp-action="Match">My Matches</a>
+                                <a class="nav-link" asp-area="" asp-controller="Profiles" asp-action="Match">My Matches</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Profiles" asp-action="Details" asp-route-id=@User.FindFirstValue(ClaimTypes.NameIdentifier)>My Profile</a>
+                                <a class="nav-link" asp-area="" asp-controller="Profiles" asp-action="Details" asp-route-id=@User.FindFirstValue(ClaimTypes.NameIdentifier)>My Profile</a>
                             </li>
                         }
                         @if (this.User.IsInRole("Admin")) {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Personalities" asp-action="Create">Create Personality</a>
+                                <a class="nav-link" asp-area="" asp-controller="Personalities" asp-action="Create">Create Personality</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Hobbies" asp-action="Create">Create Hobby</a>
+                                <a class="nav-link" asp-area="" asp-controller="Hobbies" asp-action="Create">Create Hobby</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Roles" asp-action="Create">Create Role</a>
+                                <a class="nav-link" asp-area="" asp-controller="Roles" asp-action="Create">Create Role</a>
                             </li>
                         }
                         <partial name="_LoginPartial" />

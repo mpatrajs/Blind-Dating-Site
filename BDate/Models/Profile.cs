@@ -25,6 +25,7 @@ namespace BDate.Models
         public string LastName { get; set; }
         [Required]
         [DataType(DataType.Date)]
+        [Display(Name = "Date of birth")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime DateOfBirth { get; set; }
         [Required]

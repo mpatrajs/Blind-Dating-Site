@@ -37,41 +37,63 @@ body {
 }
 
 h1 {
-
+    color: var(--dark-purple);
 }
 
 h2 {
-
+    color: var(--dark-purple);
 }
 
 h3 {
-
+    color: var(--dark-purple);
 }
 
 h4, h5, h6 {
-
+    color: var(--dark-purple);
 }
 
 p {
-
+    color: var(--dark-purple);
 }
 
 a {
-    /*
     text-decoration: none !important;
-    color: var(--purple) !important;
-    */
+    color: var(--dark-purple) !important;
 }
+
 a:hover,
 a:focus {
-    /*
-    color: var(--pink) !important;
-    */
+    color: var(--mulberry) !important;
 }
 
+.btn-primary {
+    background-color: var(--dark-purple);
+    border-color: var(--dark-purple);
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: var(--mulberry);
+    border-color: var(--mulberry);
+}
+
+.btn-primary:disabled {
+    background-color: var(--dark-blue-gray);
+    border-color: var(--dark-blue-gray);
+}
+
+.btn-primary.disabled {
+    background-color: var(--dark-blue-gray);
+    border-color: var(--dark-blue-gray);
+}
+
+.list-group-item.active {
+    color: var(--dark-blue-gray);
+    background-color: var(--pink-lace);
+    border-color: var(--pink-lace);
+}
 
 button {
-
 }
 
 input {
@@ -96,4 +118,8 @@ option {
 
 .form-control {
 
+}
+
+.footer {
+    background-color: white;
 }
