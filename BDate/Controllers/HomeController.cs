@@ -50,15 +50,6 @@ namespace BDate.Controllers
             }
         }
 
-/*        [HttpPost]
-        public async Task<IActionResult> IndexAsync()
-        {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = _userManager.FindByIdAsync(userId);
-            
-            await _userManager.UpdateAsync(await user);
-            return RedirectToAction("Index", "Home");
-        }*/
         [Authorize(Roles = "ActiveUser")]
         public IActionResult Privacy()
         {
