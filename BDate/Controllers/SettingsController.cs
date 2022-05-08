@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BDate.Data;
 using BDate.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BDate.Controllers
 {
@@ -20,6 +21,7 @@ namespace BDate.Controllers
         }
 
         // GET: Settings
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Settings.Include(s => s.Profile);
@@ -27,6 +29,7 @@ namespace BDate.Controllers
         }
 
         // GET: Settings/Details/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
@@ -46,6 +49,7 @@ namespace BDate.Controllers
         }
 
         // GET: Settings/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             ViewData["SettingId"] = new SelectList(_context.Profiles, "UserId", "UserId");
@@ -57,6 +61,7 @@ namespace BDate.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([Bind("SettingId,isHiddenAge,isHiddenLastName")] Setting setting)
         {
             if (ModelState.IsValid)
@@ -70,6 +75,7 @@ namespace BDate.Controllers
         }
 
         // GET: Settings/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -91,6 +97,7 @@ namespace BDate.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(string id, [Bind("SettingId,isHiddenAge,isHiddenLastName")] Setting setting)
         {
             if (id != setting.SettingId)
@@ -124,6 +131,7 @@ namespace BDate.Controllers
         }
 
         // GET: Settings/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -145,6 +153,7 @@ namespace BDate.Controllers
         // POST: Settings/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var setting = await _context.Settings.FindAsync(id);

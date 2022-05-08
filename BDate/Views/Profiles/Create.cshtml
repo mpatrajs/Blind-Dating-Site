@@ -9,12 +9,12 @@
 <div class="container-lg">
     <form asp-action="Create">
         <div class="row justify-content-lg-center">
-            <div class="col-lg-6 text-center">
+            <div class="card p-4 col-lg-6 text-center">
                 <h3>Create your profile to start matching</h3>
             </div>
         </div>
         <div class="row justify-content-lg-center mt-4">
-            <div class="col-lg-6 mt-4">
+            <div class="card p-4 col-lg-6 mt-4">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group row">
                     <label asp-for="FirstName" class="control-label col-lg-4 col-form-label"></label>
@@ -51,7 +51,7 @@
                 </div>
             </div>
             @if (ViewBag.Personality != null) {
-                <div class="col-lg-3 mt-4">
+                <div class="card p-4 col-lg-3 mt-4">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <button class="btn btn-primary btn-w100" type="button" data-toggle="collapse" data-target="#collapseExample1" aria-expanded="false" aria-controls="collapseExample1">
@@ -72,7 +72,7 @@
                 </div>
             }
             @if (ViewBag.Hobby != null) {
-                <div class="col-lg-3 mt-4">
+                <div class="card p-4 col-lg-3 mt-4">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <button class="btn btn-primary btn-w100" type="button" data-toggle="collapse" data-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample2">
@@ -94,7 +94,7 @@
             }
         </div>
         <div class="row justify-content-lg-center mt-4">
-            <div class="col-lg-1 d-flex justify-content-center btn-w100">
+            <div class="card p-4 d-flex justify-content-center">
                 <input type="submit" value="Create Profile" class="btn btn-primary" />
             </div>
         </div>

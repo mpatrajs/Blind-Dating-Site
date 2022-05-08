@@ -27,7 +27,7 @@
                     <ul class="navbar-nav flex-grow-1 justify-content-end">
                         @if (this.User.IsInRole("InActiveUser")) {
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Profiles" asp-action="Create"><span style="color:cornflowerblue">Please, Create your profile</span></a>
+                                <a class="nav-link" asp-area="" asp-controller="Profiles" asp-action="Create">Please, Create your profile first</a>
                             </li>
                         }
                         @if (this.User.IsInRole("ActiveUser")) {

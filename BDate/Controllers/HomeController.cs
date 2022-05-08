@@ -50,7 +50,7 @@ namespace BDate.Controllers
             }
         }
 
-        [HttpPost]
+/*        [HttpPost]
         public async Task<IActionResult> IndexAsync()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -58,8 +58,8 @@ namespace BDate.Controllers
             
             await _userManager.UpdateAsync(await user);
             return RedirectToAction("Index", "Home");
-        }
-
+        }*/
+        [Authorize(Roles = "ActiveUser")]
         public IActionResult Privacy()
         {
             return View();
