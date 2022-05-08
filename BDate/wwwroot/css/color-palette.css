@@ -1,0 +1,99 @@
+﻿/**********************
+* Color-palette 
+***********************/
+
+:root {
+    --mulberry: #CB4A8B;
+    --pink-lace: #FDDBF5;
+    --cotton-candy: #F9BFE1;
+    --dark-blue-gray: #5F5995;
+    --dark-purple: #1C1734;
+}
+
+/**********************
+* Color classes
+***********************/
+.color-mulberry {
+    color: var(--mulberry);
+}
+.color-pink-lace {
+    color: var(--pink-lace);
+}
+.color-cotton-candy {
+    color: var(--cotton-candy);
+}
+.color-dark-blue-gray {
+    color: var(--dark-blue-gray);
+}
+.color-dark-purple {
+    color: var(--dark-purple);
+}
+
+/**********************
+* Color setup
+***********************/
+body {
+    
+}
+
+h1 {
+
+}
+
+h2 {
+
+}
+
+h3 {
+
+}
+
+h4, h5, h6 {
+
+}
+
+p {
+
+}
+
+a {
+    /*
+    text-decoration: none !important;
+    color: var(--purple) !important;
+    */
+}
+a:hover,
+a:focus {
+    /*
+    color: var(--pink) !important;
+    */
+}
+
+
+button {
+
+}
+
+input {
+
+}
+
+select {
+
+}
+
+option {
+
+}
+
+.btn {
+
+}
+
+.btn-link {
+
+}
+
+.form-control {
+
+}

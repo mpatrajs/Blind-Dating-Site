@@ -1,0 +1,39 @@
+﻿/**********************
+* Background Video
+***********************/
+
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
+#videoBG {
+    position: fixed;
+    z-index: -1;
+}
+
+@media (min-aspect-ratio: 16/9) {
+    #videoBG {
+        width: 100%;
+        height: auto;
+    }
+}
+
+@media (max-aspect-ratio: 16/9) {
+    #videoBG {
+        width: auto;
+        height: 100%;
+    }
+}
+
+@media (max-width: 767px) {
+    #videoBG {
+        display: none;
+    }
+
+    body {
+        background: url(../pictures/poster.png);
+        background-size: cover;
+    }
+}

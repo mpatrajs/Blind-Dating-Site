@@ -1,4 +1,8 @@
-﻿@font-face {
+﻿/**********************
+* Typography settings
+***********************/
+
+@font-face {
     src: url(../fonts/Poppins-Bold.ttf);
     font-family: 'Poppins', sans-serif;
 }
@@ -59,4 +63,3 @@ option {
     font-family: 'Poppins', sans-serif;
     font-weight: 700;
 }
-

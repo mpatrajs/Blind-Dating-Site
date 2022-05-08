@@ -7,15 +7,17 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - BDate</title>
+    <link rel="stylesheet" href="~/css/background-video.css" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/css/typography.css" />
+    <link rel="stylesheet" href="~/css/color-palette.css" />
 </head>
 <body>
     <header>
         <nav class="navbar fixed-top navbar-expand-md navbar-toggleable-md navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">MyMatch</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><span class="color-mulberry">My</span>Match</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -55,13 +57,16 @@
             </div>
         </nav>
     </header>
+    <video id="videoBG" poster="~/pictures/poster.png" autoplay muted loop>
+        <source src="~/video/yt1s.com - Purple Sunset Alone in the Roof 4K Free Screensaver Live Wallpaper Relaxing  Windows 10 11 loop_720pFHR.mp4" type="video/mp4">
+    </video>
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="footer text-muted">
         <div class="container">
             &copy; 2022 - BDate - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
