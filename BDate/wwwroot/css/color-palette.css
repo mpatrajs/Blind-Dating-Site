@@ -82,18 +82,15 @@ a:focus {
     border-color: var(--dark-blue-gray);
 }
 
-.btn-primary.disabled {
-    background-color: var(--dark-blue-gray);
-    border-color: var(--dark-blue-gray);
+.btn-primary:not(:disabled):not(.disabled):active {
+    background-color: var(--pink-lace);
+    border-color: var(--pink-lace);
 }
 
 .list-group-item.active {
     color: var(--dark-blue-gray);
     background-color: var(--pink-lace);
     border-color: var(--pink-lace);
-}
-
-button {
 }
 
 input {

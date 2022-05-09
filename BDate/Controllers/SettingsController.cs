@@ -75,7 +75,7 @@ namespace BDate.Controllers
         }
 
         // GET: Settings/Edit/5
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ActiveUser")]
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -97,7 +97,7 @@ namespace BDate.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ActiveUser")]
         public async Task<IActionResult> Edit(string id, [Bind("SettingId,isHiddenAge,isHiddenLastName")] Setting setting)
         {
             if (id != setting.SettingId)

@@ -8,23 +8,25 @@ using Microsoft.EntityFrameworkCore;
 using BDate.Data;
 using BDate.Models;
 using Microsoft.AspNetCore.Authorization;
+using BDate.Services;
 
 namespace BDate.Controllers
 {
     public class HobbiesController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IHobbyService _service;
 
-        public HobbiesController(ApplicationDbContext context)
+        public HobbiesController(IHobbyService service)
         {
-            _context = context;
+            _service = service;
         }
 
         // GET: Hobbies
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Hobbies.ToListAsync());
+            var data = _service.GetAllAsync();
+            return View(await data);
         }
 
         // GET: Hobbies/Details/5
@@ -35,15 +37,13 @@ namespace BDate.Controllers
             {
                 return NotFound();
             }
-
-            var hobby = await _context.Hobbies
-                .FirstOrDefaultAsync(m => m.HobbyId == id);
-            if (hobby == null)
+            var data = _service.GetByIdAsync(id);
+            if (data == null)
             {
                 return NotFound();
             }
 
-            return View(hobby);
+            return View(await data);
         }
 
         // GET: Hobbies/Create
@@ -63,8 +63,7 @@ namespace BDate.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(hobby);
-                await _context.SaveChangesAsync();
+                await _service.AddAsync(hobby);
                 return RedirectToAction(nameof(Index));
             }
             return View(hobby);
@@ -78,13 +77,13 @@ namespace BDate.Controllers
             {
                 return NotFound();
             }
-
-            var hobby = await _context.Hobbies.FindAsync(id);
-            if (hobby == null)
+            //var result = await _context.Hobbies.FindAsync(id);
+            var data = _service.GetByIdAsync(id);
+            if (data == null)
             {
                 return NotFound();
             }
-            return View(hobby);
+            return View(await data);
         }
 
         // POST: Hobbies/Edit/5
@@ -104,12 +103,11 @@ namespace BDate.Controllers
             {
                 try
                 {
-                    _context.Update(hobby);
-                    await _context.SaveChangesAsync();
+                    await _service.UpdateAsync(hobby);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!HobbyExists(hobby.HobbyId))
+                    if (!_service.HobbyExists(hobby.HobbyId))
                     {
                         return NotFound();
                     }
@@ -132,14 +130,13 @@ namespace BDate.Controllers
                 return NotFound();
             }
 
-            var hobby = await _context.Hobbies
-                .FirstOrDefaultAsync(m => m.HobbyId == id);
-            if (hobby == null)
+            var data = await _service.GetByIdAsync(id);
+            if (data == null)
             {
                 return NotFound();
             }
 
-            return View(hobby);
+            return View(data);
         }
 
         // POST: Hobbies/Delete/5
@@ -148,15 +145,11 @@ namespace BDate.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var hobby = await _context.Hobbies.FindAsync(id);
-            _context.Hobbies.Remove(hobby);
-            await _context.SaveChangesAsync();
+            //var hobby = await _context.Hobbies.FindAsync(id);
+            //_context.Hobbies.Remove(hobby);
+            //await _context.SaveChangesAsync();
+            await _service.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool HobbyExists(string id)
-        {
-            return _context.Hobbies.Any(e => e.HobbyId == id);
         }
     }
 }
