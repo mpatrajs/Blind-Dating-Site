@@ -13,7 +13,9 @@ namespace BDate.Data
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-
+            if (this.Database.IsRelational()) {
+                this.Database.Migrate();
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
