@@ -15,6 +15,7 @@ namespace BDate.Data
         {
 
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Match>().HasKey(table => new {

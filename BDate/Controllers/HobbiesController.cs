@@ -25,7 +25,7 @@ namespace BDate.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
-            var data = _service.GetAll();
+            var data = _service.GetAllAsync();
             return View(await data);
         }
 
@@ -37,7 +37,7 @@ namespace BDate.Controllers
             {
                 return NotFound();
             }
-            var data = _service.GetById(id);
+            var data = _service.GetByIdAsync(id);
             if (data == null)
             {
                 return NotFound();
@@ -63,7 +63,7 @@ namespace BDate.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _service.Add(hobby);
+                await _service.AddAsync(hobby);
                 return RedirectToAction(nameof(Index));
             }
             return View(hobby);
@@ -78,7 +78,7 @@ namespace BDate.Controllers
                 return NotFound();
             }
             //var result = await _context.Hobbies.FindAsync(id);
-            var data = _service.Edit(id);
+            var data = _service.GetByIdAsync(id);
             if (data == null)
             {
                 return NotFound();
@@ -103,7 +103,7 @@ namespace BDate.Controllers
             {
                 try
                 {
-                    await _service.Update(hobby);
+                    await _service.UpdateAsync(hobby);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -130,7 +130,7 @@ namespace BDate.Controllers
                 return NotFound();
             }
 
-            var data = await _service.GetById(id);
+            var data = await _service.GetByIdAsync(id);
             if (data == null)
             {
                 return NotFound();
@@ -148,7 +148,7 @@ namespace BDate.Controllers
             //var hobby = await _context.Hobbies.FindAsync(id);
             //_context.Hobbies.Remove(hobby);
             //await _context.SaveChangesAsync();
-            await _service.Delete(id);
+            await _service.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
     }

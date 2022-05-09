@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace BDate.Services {
     public interface IHobbyService {
-        Task<IEnumerable<Hobby>> GetAll();
-        Task<Hobby> GetById(string id);
-        Task<Hobby> Edit(string id);
-        Task Add(Hobby hobby);
-        Task Update(Hobby hobby);
-        Task Delete(string id);
+        Task<IEnumerable<Hobby>> GetAllAsync();
+        Task<Hobby> GetByIdAsync(string id);
+        Task AddAsync(Hobby hobby);
+        Task UpdateAsync(Hobby hobby);
+        Task DeleteAsync(string id);
         bool HobbyExists(string id);
     }
 }
