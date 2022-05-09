@@ -1,7 +1,9 @@
 using BDate.Data;
 using BDate.Models;
 using BDate.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,16 +13,25 @@ using Xunit;
 
 namespace BDate.Tests {
     public class HobbyServiceTests {
-        [Fact]
-        public async Task GetAllAsync_ReturnsHobbies() {
-            // Arrange
-            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseInMemoryDatabase(databaseName: "GetAllAsync_ReturnsHobbies")
-                .Options;
+        private readonly ApplicationDbContext _context;
 
-            var context = new ApplicationDbContext(options);
+        public HobbyServiceTests() {
+            // By suplying a new service provider for each context,
+            // we have a single databse instance per test.
+            var serviceProvider = new ServiceCollection()
+                .AddEntityFrameworkInMemoryDatabase()
+                .BuildServiceProvider();
 
-            context.Hobbies.AddRange(
+            // Build context options
+            var builder = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase(databaseName: "HobbyServiceTests")
+                .UseInternalServiceProvider(serviceProvider);
+
+            //Instantiate the context
+            _context = new ApplicationDbContext(builder.Options);
+
+            // Seed the database
+            _context.Hobbies.AddRange(
                 Enumerable.Range(1, 10)
                     .Select(t => new Hobby { 
                         HobbyId = Guid.NewGuid().ToString(), 
@@ -28,9 +39,13 @@ namespace BDate.Tests {
                     })
             );
 
-            context.SaveChanges();
+            _context.SaveChanges();
+        }
 
-            var service = new HobbyService(context);
+        [Fact]
+        public async Task GetAllAsync_ReturnsHobbies() {
+            // Arrange
+            var service = new HobbyService(_context);
 
             // Act
             var result = await service.GetAllAsync();
@@ -40,5 +55,16 @@ namespace BDate.Tests {
             Assert.Equal(10, model.Count());
         }
 
+        [Fact]
+        public async Task GetByIdAsync_ReturnsNotFound_GivenInvalidId() {
+            // Arrange
+            var service = new HobbyService(_context);
+
+            // Act
+            var result = await service.GetByIdAsync("99");
+
+            // Assert
+            Assert.Null(result);
+        }
     }
 }
