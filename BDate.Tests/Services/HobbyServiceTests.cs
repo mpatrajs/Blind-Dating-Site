@@ -56,7 +56,7 @@ namespace BDate.Tests {
         }
 
         [Fact]
-        public async Task GetByIdAsync_ReturnsNotFound_GivenInvalidId() {
+        public async Task GetByIdAsync_ReturnsNull_GivenInvalidId() {
             // Arrange
             var service = new HobbyService(_context);
 
