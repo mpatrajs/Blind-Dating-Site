@@ -54,12 +54,12 @@
                 <div class="card p-4 col-lg-3 mt-4">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <button class="btn btn-primary btn-w100" type="button" data-toggle="collapse" data-target="#collapseExample1" aria-expanded="false" aria-controls="collapseExample1">
+                            <button class="btn btn-primary w-100" type="button" data-toggle="collapse" data-target="#collapseExample1" aria-expanded="false" aria-controls="collapseExample1">
                                 Add Personality🤡
                             </button>
                         </div>
                         <div id="collapseExample1" class="panel-collapse collapse">
-                            <div class="list-group">
+                            <div class="list-group list-group-scroll">
                                 @foreach (var item in ViewBag.Personality) {
                                     <label class="list-group-item">
                                         <input class="form-check-input me-1" type="checkbox" name=checkedPersonalityValues value="@item.PersonalityId">
@@ -75,12 +75,12 @@
                 <div class="card p-4 col-lg-3 mt-4">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <button class="btn btn-primary btn-w100" type="button" data-toggle="collapse" data-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample2">
+                            <button class="btn btn-primary w-100" type="button" data-toggle="collapse" data-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample2">
                                 Add Hobbies🧗‍♀️
                             </button>
                         </div>
                         <div id="collapseExample2" class="panel-collapse collapse">
-                            <div class="list-group">
+                            <div class="list-group list-group-scroll">
                                 @foreach (var item in ViewBag.Hobby) {
                                     <label class="list-group-item">
                                         <input class="form-check-input me-1" type="checkbox" name=checkedHobbyValues value="@item.HobbyId">
@@ -101,15 +101,6 @@
     </form>
 </div>
 
-<style>
-    .list-group {
-      height:20vh;
-      overflow-y: scroll;
-    }
-    .btn-w100 {
-        width:100%;
-    }
-</style>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

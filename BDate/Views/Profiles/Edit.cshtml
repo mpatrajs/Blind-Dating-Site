@@ -53,12 +53,12 @@
                 <div class="card p-4 col-lg-3 mt-4">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <button class="btn btn-primary btn-w100" type="button" data-toggle="collapse" data-target="#collapseExample1" aria-expanded="false" aria-controls="collapseExample1">
+                            <button class="btn btn-primary w-100" type="button" data-toggle="collapse" data-target="#collapseExample1" aria-expanded="false" aria-controls="collapseExample1">
                                 Add Personality🤡
                             </button>
                         </div>
                         <div id="collapseExample1" class="panel-collapse collapse">
-                            <div class="list-group">
+                            <div class="list-group list-group-scroll">
                                 @foreach (var item in ViewBag.Personality) {
                                     <label class="list-group-item">
                                         @if (Model.Personalities.ToHashSet().Contains(item) == false) {
@@ -78,12 +78,12 @@
                 <div class="card p-4 col-lg-3 mt-4">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <button class="btn btn-primary btn-w100" type="button" data-toggle="collapse" data-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample2">
+                            <button class="btn btn-primary w-100" type="button" data-toggle="collapse" data-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample2">
                                 Add Hobbies🧗‍♀️
                             </button>
                         </div>
                         <div id="collapseExample2" class="panel-collapse collapse">
-                            <div class="list-group">
+                            <div class="list-group list-group-scroll">
                                 @foreach (var item in ViewBag.Hobby) {
                                     <label class="list-group-item">
                                         @if (Model.Hobbies.ToHashSet().Contains(item) == false) {
@@ -101,25 +101,17 @@
             }
         </div>
         <div class="row card p-4 justify-content-lg-center mt-4">
-            <div class="d-flex justify-content-center btn-w100 text-center">
+            <div class="d-flex justify-content-center w-100 text-center">
                 <input type="submit" value="Update Profile" class="btn btn-primary" />
             </div>
-            <div class="d-flex justify-content-center btn-w100 text-center">
+            <div class="d-flex justify-content-center w-100 text-center">
                 <a asp-controller="Settings" asp-action="Edit" asp-route-id="@Model.UserId">Profile settings</a> |
                 <a asp-controller="Profiles" asp-action="Delete" asp-route-id="@Model.UserId">Delete Profile</a>
             </div>
         </div>
     </form>
 </div>
-<style>
-    .list-group {
-      height:20vh;
-      overflow-y: scroll;
-    }
-    .btn-w100 {
-        width:100%;
-    }
-</style>
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

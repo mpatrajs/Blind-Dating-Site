@@ -78,6 +78,11 @@ a:focus {
 }
 
 .btn-primary:disabled {
+    background-color: var(--dark-blue-gray) !important;
+    border-color: var(--dark-blue-gray) !important;
+}
+
+.btn-primary.disabled {
     background-color: var(--dark-blue-gray);
     border-color: var(--dark-blue-gray);
 }
@@ -91,6 +96,16 @@ a:focus {
     color: var(--dark-blue-gray);
     background-color: var(--pink-lace);
     border-color: var(--pink-lace);
+}
+
+.color-emoji-male {
+    color: transparent !important;
+    text-shadow: 0 0 0 blue !important;
+}
+
+.color-emoji-female {
+    color: transparent !important;
+    text-shadow: 0 0 0 pink !important;
 }
 
 input {
