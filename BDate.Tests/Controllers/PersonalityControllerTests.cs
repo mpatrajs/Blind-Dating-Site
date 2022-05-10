@@ -95,7 +95,7 @@ namespace BDate.Tests.Controllers {
         }
 
         [Fact]
-        public async Task Create_ReturnsNewlyCreatedPersonality() {
+        public async Task Create_RedirectsToIndex_WhenNewPersonalityIsCreated() {
             // Arrange
             var controller = new PersonalitiesController(_context);
 
@@ -191,6 +191,20 @@ namespace BDate.Tests.Controllers {
             var model = Assert.IsAssignableFrom<Personality>(viewResult.ViewData.Model);
             Assert.Equal("1", model.PersonalityId);
             Assert.Equal("Personality 1", model.PersonalityName);
+        }
+
+        [Fact]
+        public async Task DeleteConfirmed_RedirectsToIndex_WhenNewPersonalityIsDeleted() {
+            // Arrange
+            var controller = new PersonalitiesController(_context);
+
+            // Act
+            var result = await controller.DeleteConfirmed("1");
+
+            // Assert
+            var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Null(redirectToActionResult.ControllerName);
+            Assert.Equal("Index", redirectToActionResult.ActionName);
         }
 
         // Helper method which makes fresh data seed for each test
