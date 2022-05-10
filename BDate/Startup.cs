@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using BDate.Models;
 using BDate.Hubs;
-using BDate.Services;
 
 namespace BDate
 {
@@ -57,11 +56,6 @@ namespace BDate
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(120);
                 options.SlidingExpiration = true;
             });
-
-            //Services configuration
-            services.AddScoped<IHobbyService, HobbyService>();
-
-
 
             services.AddControllersWithViews();
             services.AddRazorPages();

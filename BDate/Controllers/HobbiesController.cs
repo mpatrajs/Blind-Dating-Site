@@ -8,25 +8,22 @@ using Microsoft.EntityFrameworkCore;
 using BDate.Data;
 using BDate.Models;
 using Microsoft.AspNetCore.Authorization;
-using BDate.Services;
 
 namespace BDate.Controllers
 {
     public class HobbiesController : Controller
     {
-        private readonly IHobbyService _service;
+        private readonly ApplicationDbContext _context;
 
-        public HobbiesController(IHobbyService service)
-        {
-            _service = service;
+        public HobbiesController(ApplicationDbContext context) {
+            _context = context;
         }
 
         // GET: Hobbies
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
-            var data = _service.GetAllAsync();
-            return View(await data);
+            return View(await _context.Hobbies.ToListAsync());
         }
 
         // GET: Hobbies/Details/5
@@ -37,13 +34,13 @@ namespace BDate.Controllers
             {
                 return NotFound();
             }
-            var data = _service.GetByIdAsync(id);
-            if (data == null)
-            {
+            var hobby = await _context.Hobbies
+            .FirstOrDefaultAsync(m => m.HobbyId == id);
+            if (hobby == null) {
                 return NotFound();
             }
 
-            return View(await data);
+            return View(hobby);
         }
 
         // GET: Hobbies/Create
@@ -63,7 +60,8 @@ namespace BDate.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _service.AddAsync(hobby);
+                _context.Add(hobby);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(hobby);
@@ -78,12 +76,11 @@ namespace BDate.Controllers
                 return NotFound();
             }
             //var result = await _context.Hobbies.FindAsync(id);
-            var data = _service.GetByIdAsync(id);
-            if (data == null)
-            {
+            var hobby = await _context.Hobbies.FindAsync(id);
+            if (hobby == null) {
                 return NotFound();
             }
-            return View(await data);
+            return View(hobby);
         }
 
         // POST: Hobbies/Edit/5
@@ -103,11 +100,12 @@ namespace BDate.Controllers
             {
                 try
                 {
-                    await _service.UpdateAsync(hobby);
+                    _context.Update(hobby);
+                    await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!_service.HobbyExists(hobby.HobbyId))
+                    if (!HobbyExists(hobby.HobbyId))
                     {
                         return NotFound();
                     }
@@ -130,13 +128,14 @@ namespace BDate.Controllers
                 return NotFound();
             }
 
-            var data = await _service.GetByIdAsync(id);
-            if (data == null)
+            var hobby = await _context.Hobbies
+                .FirstOrDefaultAsync(m => m.HobbyId == id);
+            if (hobby == null)
             {
                 return NotFound();
             }
 
-            return View(data);
+            return View(hobby);
         }
 
         // POST: Hobbies/Delete/5
@@ -145,11 +144,13 @@ namespace BDate.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            //var hobby = await _context.Hobbies.FindAsync(id);
-            //_context.Hobbies.Remove(hobby);
-            //await _context.SaveChangesAsync();
-            await _service.DeleteAsync(id);
+            var hobby = await _context.Hobbies.FindAsync(id);
+            _context.Hobbies.Remove(hobby);
+            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+        private bool HobbyExists(string id) {
+            return _context.Hobbies.Any(e => e.HobbyId == id);
         }
     }
 }
