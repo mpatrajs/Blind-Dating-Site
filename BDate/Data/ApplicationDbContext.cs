@@ -14,6 +14,8 @@ namespace BDate.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
             if (this.Database.IsRelational()) {
+                // Applies any pending migrations for the context to the database.
+                // Will create the database if it does not already exist.
                 this.Database.Migrate();
             }
         }
