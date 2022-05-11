@@ -5,10 +5,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BDate.Models
-{
-    public class Chat
-    {
+namespace BDate.Models {
+    public class Chat {
         [Key, ForeignKey("Profile")]
         [InverseProperty("Chats")]
         public string fromProfileId { get; set; }

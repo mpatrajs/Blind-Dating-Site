@@ -5,12 +5,9 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BDate.Models
-{
-    public class Profile
-    {
-        public Profile()
-        {
+namespace BDate.Models {
+    public class Profile {
+        public Profile() {
             this.Personalities = new HashSet<Personality>();
             this.Hobbies = new HashSet<Hobby>();
         }

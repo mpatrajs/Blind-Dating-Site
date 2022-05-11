@@ -7,12 +7,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BDate.Data
-{
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
-    {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-        {
+namespace BDate.Data {
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser> {
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) {
             if (this.Database.IsRelational()) {
                 // Applies any pending migrations for the context to the database.
                 // Will create the database if it does not already exist.
@@ -20,8 +17,7 @@ namespace BDate.Data
             }
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
+        protected override void OnModelCreating(ModelBuilder modelBuilder) {
             modelBuilder.Entity<Match>().HasKey(table => new {
                 table.fromProfileId,
                 table.toProfileId

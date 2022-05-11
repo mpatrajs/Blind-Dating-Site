@@ -4,12 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BDate.Models
-{
-    public class Hobby
-    {
-        public Hobby()
-        {
+namespace BDate.Models {
+    public class Hobby {
+        public Hobby() {
             this.Profiles = new HashSet<Profile>();
         }
         public string HobbyId { get; set; }
