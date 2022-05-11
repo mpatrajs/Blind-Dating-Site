@@ -352,12 +352,13 @@ namespace BDate.Controllers {
 
             return View(await applicationDbContext.ToListAsync());
         }
+
         // POST for LETS CHAT button
         [Authorize(Roles = "ActiveUser")]
         [HttpPost]
         public async Task<IActionResult> Match(String profileId) {
             var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            ViewBag.currentUserId = currentUserId;
+            //ViewBag.currentUserId = currentUserId;
             var createRoomId = profileId + "&" + currentUserId;
             var reverseCreateRoomId = currentUserId + "&" + profileId;
 
@@ -392,9 +393,9 @@ namespace BDate.Controllers {
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Chat", "Profiles", new { roomId = createRoomId });
             } else if (chatRoomIds.Contains(createRoomId) && roomIdfromProfile != null) {
-                return RedirectToAction("Chat", "Profiles", new { roomId = (String)roomIdfromProfile.ToString() });
+                return RedirectToAction("Chat", "Profiles", new { roomId = roomIdfromProfile });
             } else if (chatRoomIds.Contains(reverseCreateRoomId) && roomIdtoProfile != null) {
-                return RedirectToAction("Chat", "Profiles", new { roomId = (String)roomIdtoProfile.ToString() });
+                return RedirectToAction("Chat", "Profiles", new { roomId = roomIdtoProfile });
             } else {
                 return NotFound();
             }

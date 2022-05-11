@@ -36,11 +36,11 @@
                             <div class="col-lg-12 mb-4">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
-                                        <button class="btn btn-primary w-100" type="button" data-toggle="collapse" data-target="#@System.Math.Abs(item.ApplicationUser.Email.GetHashCode()).ToString().Insert(0,"p")" aria-expanded="false" aria-controls="@System.Math.Abs(item.ApplicationUser.Email.GetHashCode()).ToString().Insert(0,"p")">
+                                        <button class="btn btn-primary w-100" type="button" data-toggle="collapse" data-target="#@System.Math.Abs(item.ApplicationUser.Id.GetHashCode()).ToString().Insert(0,"p")" aria-expanded="false" aria-controls="@System.Math.Abs(item.ApplicationUser.Id.GetHashCode()).ToString().Insert(0,"p")">
                                             Personalities
                                         </button>
                                     </div>
-                                    <div id="@System.Math.Abs(item.ApplicationUser.Email.GetHashCode()).ToString().Insert(0,"p")" class="panel-collapse collapse">
+                                    <div id="@System.Math.Abs(item.ApplicationUser.Id.GetHashCode()).ToString().Insert(0,"p")" class="panel-collapse collapse">
                                         <div class="list-group">
                                             @foreach (var personality in item.Personalities.Take(3)) {
                                                 <label class="list-group-item">
@@ -64,11 +64,11 @@
                             <div class="col-lg-12 mb-4">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
-                                        <button class="btn btn-primary w-100" type="button" data-toggle="collapse" data-target="#@System.Math.Abs(item.ApplicationUser.Email.GetHashCode()).ToString().Insert(0,"h")" aria-expanded="false" aria-controls="@System.Math.Abs(item.ApplicationUser.Email.GetHashCode()).ToString().Insert(0,"h")">
+                                        <button class="btn btn-primary w-100" type="button" data-toggle="collapse" data-target="#@System.Math.Abs(item.ApplicationUser.Id.GetHashCode()).ToString().Insert(0,"h")" aria-expanded="false" aria-controls="@System.Math.Abs(item.ApplicationUser.Id.GetHashCode()).ToString().Insert(0,"h")">
                                             Hobbies
                                         </button>
                                     </div>
-                                    <div id="@System.Math.Abs(item.ApplicationUser.Email.GetHashCode()).ToString().Insert(0,"h")" class="panel-collapse collapse">
+                                    <div id="@System.Math.Abs(item.ApplicationUser.Id.GetHashCode()).ToString().Insert(0,"h")" class="panel-collapse collapse">
                                         <div class="list-group">
                                             @foreach (var hobby in item.Hobbies.Take(3)) {
                                                 <label class="list-group-item">
