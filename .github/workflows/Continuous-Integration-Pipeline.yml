@@ -1,4 +1,8 @@
 name: Continuous Integration
+env:
+  EB_APPLICATION_NAME : "Netcoremymatch"
+  EB_ENVIRONMENT_NAME : "Netcoremymatch-env"
+  AWS_REGION_NAME : "eu-north-1"
 
 on:
   push:
@@ -42,8 +46,8 @@ jobs:
         aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         application_name: MyApplicationName
         environment_name: MyApplication-Environment
-        version_label: ${{ github.run_id }}
-        region: us-west-2
+        version_label: ${{ github.sha }}
+        region: ${{ env.AWS_REGION_NAME }}
         deployment_package: deploy.zip
       
       
