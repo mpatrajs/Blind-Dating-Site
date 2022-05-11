@@ -1,6 +1,6 @@
 name: Continuous Integration
 env:
-  EB_APPLICATION_NAME : "Netcoremymatch"
+  EB_APPLICATION_NAME : "netcore-mymatch"
   EB_ENVIRONMENT_NAME : "Netcoremymatch-env"
   AWS_REGION_NAME : "eu-north-1"
 
