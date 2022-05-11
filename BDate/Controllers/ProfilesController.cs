@@ -402,7 +402,7 @@ namespace BDate.Controllers {
         }
 
         [Authorize(Roles = "ActiveUser")]
-        public async Task<IActionResult> Chat(string roomId) {
+        public IActionResult Chat(string roomId) {
             var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (roomId != null && roomId.Contains(currentUserId)) {
                 var profile = _context.Profiles
