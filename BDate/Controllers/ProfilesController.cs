@@ -358,7 +358,7 @@ namespace BDate.Controllers {
         [HttpPost]
         public async Task<IActionResult> Match(String profileId) {
             var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            //ViewBag.currentUserId = currentUserId;
+
             var createRoomId = profileId + "&" + currentUserId;
             var reverseCreateRoomId = currentUserId + "&" + profileId;
 
