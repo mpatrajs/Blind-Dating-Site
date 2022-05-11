@@ -1,8 +1,9 @@
 name: Continuous Integration
 env:
-  EB_APPLICATION_NAME : "Netcoremymatch"
+  EB_APPLICATION_NAME : "netcore-mymatch"
   EB_ENVIRONMENT_NAME : "Netcoremymatch-env"
   AWS_REGION_NAME : "eu-north-1"
+  DEPLOY_PACKAGE_NAME: "netcore_app${{ github.sha }}.zip"
 
 on:
   push:
@@ -34,20 +35,20 @@ jobs:
       run: dotnet test --no-build --verbosity normal
       
     - name: Publish prod
-      run: dotnet publish -r linux-x64 --configuration "Release" --self-contained "true" -o ../site;
+      run: dotnet publish -r linux-x64 --configuration "Release" -o bundle;
       
     - name: Generate deployment package
-      run: zip -r deploy.zip . -x '*.git*'
+      run: zip -r ${{ env.DEPLOY_PACKAGE_NAME }} ./ -x '*.git*'
     
     - name: Deploy to EB
       uses: einaregilsson/beanstalk-deploy@v20
       with:
         aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        application_name: MyApplicationName
-        environment_name: MyApplication-Environment
+        application_name: ${{ env.EB_APPLICATION_NAME }}
+        environment_name: ${{ env.EB_ENVIRONMENT_NAME }}
         version_label: ${{ github.sha }}
         region: ${{ env.AWS_REGION_NAME }}
-        deployment_package: deploy.zip
+        deployment_package: ${{ env.DEPLOY_PACKAGE_NAME }}
       
       
