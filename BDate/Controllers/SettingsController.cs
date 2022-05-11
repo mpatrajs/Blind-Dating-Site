@@ -68,9 +68,10 @@ namespace BDate.Controllers
             {
                 _context.Add(setting);
                 await _context.SaveChangesAsync();
+                ViewData["SettingId"] = new SelectList(_context.Profiles, "UserId", "UserId", setting.SettingId);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["SettingId"] = new SelectList(_context.Profiles, "UserId", "UserId", setting.SettingId);
+            //ViewData["SettingId"] = new SelectList(_context.Profiles, "UserId", "UserId", setting.SettingId);
             return View(setting);
         }
 
