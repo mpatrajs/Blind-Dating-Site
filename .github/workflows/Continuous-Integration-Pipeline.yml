@@ -38,7 +38,7 @@ jobs:
       run: dotnet publish -r linux-x64 --configuration "Release" -o bundle;
       
     - name: Generate deployment package
-      run: zip -r ${{ env.DEPLOY_PACKAGE_NAME }} ./ -x '*.git*'
+      run: zip -r bundle . -x '*.git*'
     
     - name: Deploy to EB
       uses: einaregilsson/beanstalk-deploy@v20
@@ -50,5 +50,4 @@ jobs:
         version_label: ${{ github.sha }}
         region: ${{ env.AWS_REGION_NAME }}
         deployment_package: ${{ env.DEPLOY_PACKAGE_NAME }}
-      
       
