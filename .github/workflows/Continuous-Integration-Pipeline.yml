@@ -30,7 +30,7 @@ jobs:
       run: dotnet test --no-build --verbosity normal
       
     - name: Publish prod
-      run: cd Blind-Dating-Site; dotnet restore; dotnet publish -r linux-x64 --configuration "Release" --self-contained "true" -o ../site;
+      run: dotnet publish -r linux-x64 --configuration "Release" --self-contained "true" -o ../site;
       
     - name: Generate deployment package
       run: zip -r deploy.zip . -x '*.git*'
