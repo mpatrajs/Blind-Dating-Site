@@ -36,7 +36,7 @@ jobs:
       run: dotnet test --no-build --verbosity normal
       
     - name: Publish prod ✍
-      run: cd ${{ env.APPLICATION_FOLDER }}; dotnet restore; dotnet publish -r win10-x64 --configuration "Release" --self-contained "true" -o ../site;
+      run: cd ./${{ env.APPLICATION_FOLDER }}; dotnet restore; dotnet publish -r win10-x64 --configuration "Release" --self-contained "true" -o ../site;
       
     - name: Generate deployment package 📄
       run: cd site; zip ../site.zip *; cd ..; zip BDate.zip site.zip aws-windows-deployment-manifest.json
