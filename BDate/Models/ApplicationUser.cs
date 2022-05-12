@@ -4,10 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BDate.Models
-{
-    public class ApplicationUser : IdentityUser
-    {
+namespace BDate.Models {
+    public class ApplicationUser : IdentityUser {
         public virtual Profile Profile { get; set; }
     }
 }

@@ -14,22 +14,17 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using BDate.Models;
 using BDate.Hubs;
-using BDate.Services;
 
-namespace BDate
-{
-    public class Startup
-    {
-        public Startup(IConfiguration configuration)
-        {
+namespace BDate {
+    public class Startup {
+        public Startup(IConfiguration configuration) {
             Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
+        public void ConfigureServices(IServiceCollection services) {
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options => {
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
@@ -43,25 +38,18 @@ namespace BDate
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             //IF user not logged in returns to login page
-            services.AddMvc(options =>
-            {
+            services.AddMvc(options => {
                 // This pushes users to login if not authenticated
                 options.Filters.Add(new AuthorizeFilter());
             });
 
             //Session settings
-            services.ConfigureApplicationCookie(options =>
-            {
+            services.ConfigureApplicationCookie(options => {
                 //other options...
                 options.Cookie.Name = ".AspNetCore.Identity.Application";
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(120);
                 options.SlidingExpiration = true;
             });
-
-            //Services configuration
-            services.AddScoped<IHobbyService, HobbyService>();
-
-
 
             services.AddControllersWithViews();
             services.AddRazorPages();
@@ -69,14 +57,10 @@ namespace BDate
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
+            if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
-            }
-            else
-            {
+            } else {
                 app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
@@ -89,9 +73,8 @@ namespace BDate
 
             app.UseAuthentication();
             app.UseAuthorization();
-            
-            app.UseEndpoints(endpoints =>
-            {
+
+            app.UseEndpoints(endpoints => {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

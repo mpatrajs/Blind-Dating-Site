@@ -8,48 +8,39 @@ using Microsoft.EntityFrameworkCore;
 using BDate.Data;
 using BDate.Models;
 using Microsoft.AspNetCore.Authorization;
-using BDate.Services;
 
-namespace BDate.Controllers
-{
-    public class HobbiesController : Controller
-    {
-        private readonly IHobbyService _service;
+namespace BDate.Controllers {
+    public class HobbiesController : Controller {
+        private readonly ApplicationDbContext _context;
 
-        public HobbiesController(IHobbyService service)
-        {
-            _service = service;
+        public HobbiesController(ApplicationDbContext context) {
+            _context = context;
         }
 
         // GET: Hobbies
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Index()
-        {
-            var data = _service.GetAllAsync();
-            return View(await data);
+        public async Task<IActionResult> Index() {
+            return View(await _context.Hobbies.ToListAsync());
         }
 
         // GET: Hobbies/Details/5
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Details(string id)
-        {
-            if (id == null)
-            {
+        public async Task<IActionResult> Details(string id) {
+            if (id == null) {
                 return NotFound();
             }
-            var data = _service.GetByIdAsync(id);
-            if (data == null)
-            {
+            var hobby = await _context.Hobbies
+            .FirstOrDefaultAsync(m => m.HobbyId == id);
+            if (hobby == null) {
                 return NotFound();
             }
 
-            return View(await data);
+            return View(hobby);
         }
 
         // GET: Hobbies/Create
         [Authorize(Roles = "Admin")]
-        public IActionResult Create()
-        {
+        public IActionResult Create() {
             return View();
         }
 
@@ -59,11 +50,10 @@ namespace BDate.Controllers
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("HobbyId,HobbyName")] Hobby hobby)
-        {
-            if (ModelState.IsValid)
-            {
-                await _service.AddAsync(hobby);
+        public async Task<IActionResult> Create([Bind("HobbyId,HobbyName")] Hobby hobby) {
+            if (ModelState.IsValid) {
+                _context.Add(hobby);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(hobby);
@@ -71,19 +61,16 @@ namespace BDate.Controllers
 
         // GET: Hobbies/Edit/5
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit(string id)
-        {
-            if (id == null)
-            {
+        public async Task<IActionResult> Edit(string id) {
+            if (id == null) {
                 return NotFound();
             }
             //var result = await _context.Hobbies.FindAsync(id);
-            var data = _service.GetByIdAsync(id);
-            if (data == null)
-            {
+            var hobby = await _context.Hobbies.FindAsync(id);
+            if (hobby == null) {
                 return NotFound();
             }
-            return View(await data);
+            return View(hobby);
         }
 
         // POST: Hobbies/Edit/5
@@ -92,27 +79,19 @@ namespace BDate.Controllers
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("HobbyId,HobbyName")] Hobby hobby)
-        {
-            if (id != hobby.HobbyId)
-            {
+        public async Task<IActionResult> Edit(string id, [Bind("HobbyId,HobbyName")] Hobby hobby) {
+            if (id != hobby.HobbyId) {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    await _service.UpdateAsync(hobby);
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!_service.HobbyExists(hobby.HobbyId))
-                    {
+            if (ModelState.IsValid) {
+                try {
+                    _context.Update(hobby);
+                    await _context.SaveChangesAsync();
+                } catch (DbUpdateConcurrencyException) {
+                    if (!HobbyExists(hobby.HobbyId)) {
                         return NotFound();
-                    }
-                    else
-                    {
+                    } else {
                         throw;
                     }
                 }
@@ -123,33 +102,32 @@ namespace BDate.Controllers
 
         // GET: Hobbies/Delete/5
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Delete(string id)
-        {
-            if (id == null)
-            {
+        public async Task<IActionResult> Delete(string id) {
+            if (id == null) {
                 return NotFound();
             }
 
-            var data = await _service.GetByIdAsync(id);
-            if (data == null)
-            {
+            var hobby = await _context.Hobbies
+                .FirstOrDefaultAsync(m => m.HobbyId == id);
+            if (hobby == null) {
                 return NotFound();
             }
 
-            return View(data);
+            return View(hobby);
         }
 
         // POST: Hobbies/Delete/5
         [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
-        {
-            //var hobby = await _context.Hobbies.FindAsync(id);
-            //_context.Hobbies.Remove(hobby);
-            //await _context.SaveChangesAsync();
-            await _service.DeleteAsync(id);
+        public async Task<IActionResult> DeleteConfirmed(string id) {
+            var hobby = await _context.Hobbies.FindAsync(id);
+            _context.Hobbies.Remove(hobby);
+            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+        private bool HobbyExists(string id) {
+            return _context.Hobbies.Any(e => e.HobbyId == id);
         }
     }
 }

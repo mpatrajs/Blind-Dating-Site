@@ -21,12 +21,12 @@
                     <div class="mt-4">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <button class="btn btn-primary btn-w100" type="button" data-toggle="collapse" data-target="#collapseExample1" aria-expanded="false" aria-controls="collapseExample1">
+                                <button class="btn btn-primary w-100" type="button" data-toggle="collapse" data-target="#collapseExample1" aria-expanded="false" aria-controls="collapseExample1">
                                     Show Personalities
                                 </button>
                             </div>
                             <div id="collapseExample1" class="panel-collapse collapse">
-                                <div class="list-group">
+                                <div class="list-group list-group-scroll">
                                     @foreach (var item in Model.Personalities) {
                                         <label class="list-group-item">
                                             @item.PersonalityName
@@ -41,12 +41,12 @@
                     <div class="mt-4">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <button class="btn btn-primary btn-w100" type="button" data-toggle="collapse" data-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample2">
+                                <button class="btn btn-primary w-100" type="button" data-toggle="collapse" data-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample2">
                                     Show Hobbies
                                 </button>
                             </div>
                             <div id="collapseExample2" class="panel-collapse collapse">
-                                <div class="list-group">
+                                <div class="list-group list-group-scroll">
                                     @foreach (var item in Model.Hobbies) {
                                         <label class="list-group-item">
                                             @item.HobbyName
@@ -70,12 +70,3 @@
         </div>
     </div>
 </div>
-<style>
-    .list-group {
-      height:20vh;
-      overflow-y: scroll;
-    }
-    .btn-w100 {
-        width:100%;
-    }
-</style>

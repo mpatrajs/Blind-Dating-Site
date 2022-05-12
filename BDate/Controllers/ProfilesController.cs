@@ -11,10 +11,8 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 
-namespace BDate.Controllers
-{
-    public class ProfilesController : Controller
-    {
+namespace BDate.Controllers {
+    public class ProfilesController : Controller {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
@@ -23,8 +21,7 @@ namespace BDate.Controllers
             ApplicationDbContext context,
             UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager,
-            SignInManager<ApplicationUser> signInManager)
-        {
+            SignInManager<ApplicationUser> signInManager) {
             _context = context;
             _userManager = userManager;
             _roleManager = roleManager;
@@ -34,8 +31,7 @@ namespace BDate.Controllers
         // GET: Profiles
 
         [Authorize(Roles = "ActiveUser")]
-        public async Task<IActionResult> Index()
-        {
+        public async Task<IActionResult> Index() {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             var applicationDbContext = _context.Profiles.Where(p => p.UserId != userId)
@@ -66,8 +62,7 @@ namespace BDate.Controllers
         [Authorize(Roles = "ActiveUser")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> IndexAsync(String profileId)
-        {
+        public async Task<IActionResult> IndexAsync(String profileId) {
             //current userId
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             // check if current user already have fromProfileId then redirecttoaction
@@ -77,10 +72,8 @@ namespace BDate.Controllers
                 .Select(p => p.fromProfileId)
                 .ToListAsync();
 
-            if (!profileIdOfAlreadyMatchedId.Contains(profileId))
-            {
-                var match = new Match
-                {
+            if (!profileIdOfAlreadyMatchedId.Contains(profileId)) {
+                var match = new Match {
                     fromProfileId = userId,
                     toProfileId = profileId,
                 };
@@ -88,19 +81,15 @@ namespace BDate.Controllers
                 _context.Add(match);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", "Profiles");
-            }
-            else
-            {
+            } else {
                 return RedirectToAction("Index", "Profiles");
             }
         }
 
         // GET: Profiles/Details/5
         [Authorize(Roles = "ActiveUser")]
-        public async Task<IActionResult> Details(string id)
-        {
-            if (id == null)
-            {
+        public async Task<IActionResult> Details(string id) {
+            if (id == null) {
                 return NotFound();
             }
 
@@ -112,8 +101,7 @@ namespace BDate.Controllers
             var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             ViewBag.currentUserId = currentUserId;
 
-            if (profile == null)
-            {
+            if (profile == null) {
                 return NotFound();
             }
 
@@ -122,8 +110,7 @@ namespace BDate.Controllers
 
         // GET: Profiles/Create
         [Authorize(Roles = "InActiveUser")]
-        public async Task<IActionResult> Create()
-        {
+        public async Task<IActionResult> Create() {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             var personalities = await _context.Personalities.ToListAsync();
@@ -143,26 +130,22 @@ namespace BDate.Controllers
         [Authorize(Roles = "InActiveUser")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserId,FirstName,LastName,DateOfBirth,Gender")] Profile profile, List<String> checkedPersonalityValues, List<String> checkedHobbyValues)
-        {
-            if (ModelState.IsValid)
-            {
+        public async Task<IActionResult> Create([Bind("UserId,FirstName,LastName,DateOfBirth,Gender")] Profile profile, List<String> checkedPersonalityValues, List<String> checkedHobbyValues) {
+            if (ModelState.IsValid) {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
                 profile.UserId = userId;
                 _context.Add(profile);
                 await _context.SaveChangesAsync();
 
-                foreach (var checkedPersonality in checkedPersonalityValues)
-                {
+                foreach (var checkedPersonality in checkedPersonalityValues) {
                     var personality = _context.Personalities
                     .FirstOrDefaultAsync(m => m.PersonalityId == checkedPersonality);
 
                     profile.Personalities.Add(await personality);
                 }
 
-                foreach (var checkedHobby in checkedHobbyValues)
-                {
+                foreach (var checkedHobby in checkedHobbyValues) {
                     var hobby = _context.Hobbies
                     .FirstOrDefaultAsync(m => m.HobbyId == checkedHobby);
 
@@ -176,8 +159,7 @@ namespace BDate.Controllers
                 await _userManager.UpdateAsync(await user);
 
                 //Add one to one with Setting
-                var setting = new Setting
-                {
+                var setting = new Setting {
                     SettingId = userId,
                     isHiddenAge = false,
                     isHiddenLastName = false
@@ -191,8 +173,7 @@ namespace BDate.Controllers
 
                 // Automatically sign in user after creating profile to refresh cookie (cookie stores Claims and Roles)
                 ApplicationUser applicationUseruser = await _userManager.FindByIdAsync(userId);
-                if (applicationUseruser != null)
-                {
+                if (applicationUseruser != null) {
                     await _signInManager.SignInAsync(applicationUseruser, isPersistent: false);
                 }
 
@@ -204,10 +185,8 @@ namespace BDate.Controllers
 
         // GET: Profiles/Edit/5
         [Authorize(Roles = "ActiveUser")]
-        public async Task<IActionResult> Edit(string id)
-        {
-            if (id == null)
-            {
+        public async Task<IActionResult> Edit(string id) {
+            if (id == null) {
                 return NotFound();
             }
 
@@ -223,8 +202,7 @@ namespace BDate.Controllers
             ViewBag.Personality = personalities;
             ViewBag.Hobby = hobbies;
 
-            if (profile == null)
-            {
+            if (profile == null) {
                 return NotFound();
             }
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", profile.UserId);
@@ -237,18 +215,14 @@ namespace BDate.Controllers
         [Authorize(Roles = "ActiveUser")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("UserId,FirstName,LastName,DateOfBirth,Gender")] Profile profile, List<String> checkedPersonalityValues, List<String> checkedHobbyValues)
-        {
-            if (id != profile.UserId)
-            {
+        public async Task<IActionResult> Edit(string id, [Bind("UserId,FirstName,LastName,DateOfBirth,Gender")] Profile profile, List<String> checkedPersonalityValues, List<String> checkedHobbyValues) {
+            if (id != profile.UserId) {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                   _context.Update(profile);
+            if (ModelState.IsValid) {
+                try {
+                    _context.Update(profile);
 
                     var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                     var profileOnGet = _context.Profiles.Where(p => p.UserId == userId)
@@ -259,16 +233,14 @@ namespace BDate.Controllers
                     profileOnGet.Personalities.Clear();
                     profileOnGet.Hobbies.Clear();
 
-                    foreach (var checkedPersonality in checkedPersonalityValues)
-                    {
+                    foreach (var checkedPersonality in checkedPersonalityValues) {
                         var personality = _context.Personalities
                         .FirstOrDefaultAsync(m => m.PersonalityId == checkedPersonality);
 
                         profile.Personalities.Add(await personality);
                     }
 
-                    foreach (var checkedHobby in checkedHobbyValues)
-                    {
+                    foreach (var checkedHobby in checkedHobbyValues) {
                         var hobby = _context.Hobbies
                         .FirstOrDefaultAsync(m => m.HobbyId == checkedHobby);
 
@@ -277,15 +249,10 @@ namespace BDate.Controllers
 
                     _context.Update(profile);
                     await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProfileExists(profile.UserId))
-                    {
+                } catch (DbUpdateConcurrencyException) {
+                    if (!ProfileExists(profile.UserId)) {
                         return NotFound();
-                    }
-                    else
-                    {
+                    } else {
                         throw;
                     }
                 }
@@ -297,10 +264,8 @@ namespace BDate.Controllers
 
         // GET: Profiles/Delete/5
         [Authorize(Roles = "ActiveUser")]
-        public async Task<IActionResult> Delete(string id)
-        {
-            if (id == null)
-            {
+        public async Task<IActionResult> Delete(string id) {
+            if (id == null) {
                 return NotFound();
             }
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -312,8 +277,7 @@ namespace BDate.Controllers
             .Include(p => p.ApplicationUser)
             .FirstOrDefaultAsync(p => p.UserId == id);
 
-            if (profile == null)
-            {
+            if (profile == null) {
                 return NotFound();
             }
 
@@ -324,8 +288,7 @@ namespace BDate.Controllers
         [Authorize(Roles = "ActiveUser")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
-        {
+        public async Task<IActionResult> DeleteConfirmed(string id) {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user = _userManager.FindByIdAsync(userId);
             //Changing users role from ActiveUser to InActiveUser
@@ -340,23 +303,20 @@ namespace BDate.Controllers
 
             // Automatically sign in user after creating profile to refresh cookie (cookie stores Claims and Roles)
             ApplicationUser applicationUseruser = await _userManager.FindByIdAsync(userId);
-            if (applicationUseruser != null)
-            {
+            if (applicationUseruser != null) {
                 await _signInManager.SignInAsync(applicationUseruser, isPersistent: false);
             }
 
             return RedirectToAction("Create", "Profiles");
         }
 
-        private bool ProfileExists(string id)
-        {
+        private bool ProfileExists(string id) {
             return _context.Profiles.Any(e => e.UserId == id);
         }
 
         // GET: Match
         [Authorize(Roles = "ActiveUser")]
-        public async Task<IActionResult> Match()
-        {
+        public async Task<IActionResult> Match() {
             var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             var applicationDbContext = _context.Profiles.Where(p => p.UserId != currentUserId)
@@ -380,10 +340,10 @@ namespace BDate.Controllers
                 .ToListAsync();
 
             // Profile Ids which STARTED chat with currentId
-             var openForChatIds = await _context.Chats
-                .Where(c => c.toProfileId == currentUserId) //lets chat was sent to profile id and this id now need to join chat
-                .Select(c => c.fromProfileId) //select all ids which pressed lets chat button with this id
-                .ToListAsync();
+            var openForChatIds = await _context.Chats
+               .Where(c => c.toProfileId == currentUserId) //lets chat was sent to profile id and this id now need to join chat
+               .Select(c => c.fromProfileId) //select all ids which pressed lets chat button with this id
+               .ToListAsync();
 
             ViewBag.currentUserId = currentUserId;
             ViewBag.profileIdOfAlreadyMatchedId = profileIdOfAlreadyMatchedId;
@@ -392,13 +352,13 @@ namespace BDate.Controllers
 
             return View(await applicationDbContext.ToListAsync());
         }
+
         // POST for LETS CHAT button
         [Authorize(Roles = "ActiveUser")]
         [HttpPost]
-        public async Task<IActionResult> Match(String profileId)
-        {
+        public async Task<IActionResult> Match(String profileId) {
             var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            ViewBag.currentUserId = currentUserId;
+
             var createRoomId = profileId + "&" + currentUserId;
             var reverseCreateRoomId = currentUserId + "&" + profileId;
 
@@ -423,10 +383,8 @@ namespace BDate.Controllers
                 .FirstOrDefaultAsync().Result;
 
             // if chat room doesnt exist then create it
-            if (!chatRoomIds.Contains(createRoomId) && !existingRoomId.Contains(profileId))
-            {
-                var chat = new Chat
-                {
+            if (!chatRoomIds.Contains(createRoomId) && !existingRoomId.Contains(profileId)) {
+                var chat = new Chat {
                     fromProfileId = currentUserId,
                     toProfileId = profileId,
                     roomId = createRoomId
@@ -434,27 +392,19 @@ namespace BDate.Controllers
                 _context.Add(chat);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Chat", "Profiles", new { roomId = createRoomId });
-            }
-            else if (chatRoomIds.Contains(createRoomId) && roomIdfromProfile != null)
-            {
-                return RedirectToAction("Chat", "Profiles", new { roomId = (String)roomIdfromProfile.ToString() });
-            }
-            else if (chatRoomIds.Contains(reverseCreateRoomId) && roomIdtoProfile != null)
-            {
-                return RedirectToAction("Chat", "Profiles", new { roomId = (String)roomIdtoProfile.ToString() });
-            }
-            else
-            {
+            } else if (chatRoomIds.Contains(createRoomId) && roomIdfromProfile != null) {
+                return RedirectToAction("Chat", "Profiles", new { roomId = roomIdfromProfile });
+            } else if (chatRoomIds.Contains(reverseCreateRoomId) && roomIdtoProfile != null) {
+                return RedirectToAction("Chat", "Profiles", new { roomId = roomIdtoProfile });
+            } else {
                 return NotFound();
             }
         }
 
         [Authorize(Roles = "ActiveUser")]
-        public async Task<IActionResult> Chat(string roomId)
-        {
+        public IActionResult Chat(string roomId) {
             var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (roomId != null && roomId.Contains(currentUserId))
-            {
+            if (roomId != null && roomId.Contains(currentUserId)) {
                 var profile = _context.Profiles
                     .Where(p => p.UserId == currentUserId);
 
