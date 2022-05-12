@@ -35,10 +35,10 @@ jobs:
       run: dotnet test --no-build --verbosity normal
       
     - name: Publish prod
-      run: dotnet publish -r linux-x64 --configuration "Release" -o bundle;
+      run: cd Blind-Dating-Site; dotnet publish -r linux-x64 --configuration "Release" --self-contained "true" -o ../bundle;
       
     - name: Generate deployment package
-      run: zip -r ${{ env.DEPLOY_PACKAGE_NAME }} ./bundle/* -x '*.git*';
+      run: cd bundle; zip -r ../${{ env.DEPLOY_PACKAGE_NAME }} * -x '*.git*';
     
     - name: Deploy to EB
       uses: einaregilsson/beanstalk-deploy@v20
