@@ -38,7 +38,7 @@ jobs:
       run: dotnet publish -r linux-x64 --configuration "Release" -o ../bundle;
       
     - name: Generate deployment package
-      run: cd ./bundle; zip -r ${{ env.DEPLOY_PACKAGE_NAME }} . -x '*.git*'; cd ..;
+      run: cd bundle; zip -r ${{ env.DEPLOY_PACKAGE_NAME }} . -x '*.git*'; cd ..;
     
     - name: Deploy to EB
       uses: einaregilsson/beanstalk-deploy@v20
