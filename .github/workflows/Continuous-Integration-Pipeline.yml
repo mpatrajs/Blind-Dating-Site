@@ -38,7 +38,7 @@ jobs:
       run: dotnet publish -r linux-x64 --configuration "Release" -o ../bundle;
       
     - name: Generate deployment package 📄
-      run: zip -r ../${{ env.DEPLOY_PACKAGE_NAME }} bundle;
+      run: zip -r ../${{ env.DEPLOY_PACKAGE_NAME }} ../bundle;
     
     - name: Configure AWS Credentials 🔐
       uses: aws-actions/configure-aws-credentials@v1
