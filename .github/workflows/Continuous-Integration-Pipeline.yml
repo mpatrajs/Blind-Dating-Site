@@ -1,8 +1,8 @@
-name: Continuous Integration
+name: Continuous Integration and Deployment
 env:
   EB_PACKAGE_S3_BUCKET_NAME : "netcore-mymatch-application-packages"
-  EB_APPLICATION_NAME : "netcore-mymatch"
-  EB_ENVIRONMENT_NAME : "Netcoremymatch-env"
+  EB_APPLICATION_NAME : "mymatch"
+  EB_ENVIRONMENT_NAME : "mymatch-env"
   AWS_REGION_NAME : "eu-north-1"
   DEPLOY_PACKAGE_NAME: "netcore_app${{ github.sha }}.zip"
 
