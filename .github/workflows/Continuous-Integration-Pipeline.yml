@@ -38,7 +38,7 @@ jobs:
       run: dotnet publish -r win10-x64 --configuration "Release" --self-contained "true" -o ../site;
       
     - name: Generate deployment package 📄
-      run: cd site; zip ../site.zip *; cd ..; zip BDate.zip site.zip aws-windows-deployment-manifest.json
+      run: zip ../site.zip *; cd ..; zip BDate.zip site.zip aws-windows-deployment-manifest.json
       
     - name: Deploy to Elastic Beanstalk 🚀
       uses: einaregilsson/beanstalk-deploy@v20
