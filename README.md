@@ -1,7 +1,9 @@
 # Blind-Dating-Site [![Build and Deploy to Azure](https://github.com/Radec24/Blind-Dating-Site/actions/workflows/Build-And-Deploy.yml/badge.svg)](https://github.com/Radec24/Blind-Dating-Site/actions/workflows/Build-And-Deploy.yml)
 
 This is our prototype of web project written on ASP.Net Core
-Link to our project: https://mymatch.azurewebsites.net/
+
+Link to our web-application project: https://mymatch.azurewebsites.net/
+
 ![image](https://user-images.githubusercontent.com/25621121/168317497-a4de4140-d7c9-4637-9932-eb0e0e2e2a94.png)
 
 # Technologies which were used
