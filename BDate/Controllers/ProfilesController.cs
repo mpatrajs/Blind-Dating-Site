@@ -65,7 +65,7 @@ namespace BDate.Controllers {
         public async Task<IActionResult> IndexAsync(String profileId) {
             //current userId
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            // check if current user already have fromProfileId then redirecttoaction
+
             // if Matches where toProfileId == userId. Select fromProfileId . to List Contains (profileId this is from url)
             var profileIdOfAlreadyMatchedId = await _context.Matches
                 .Where(p => p.toProfileId == userId)
