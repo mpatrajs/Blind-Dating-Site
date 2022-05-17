@@ -1,14 +1,6 @@
-name: Continuous Integration and Deployment
-env:
-  EB_PACKAGE_S3_BUCKET_NAME : "netcore-mymatch-application-packages"
-  EB_APPLICATION_NAME : "mymatch-webapp"
-  EB_ENVIRONMENT_NAME : "mymatch-webapp-env-windows"
-  AWS_REGION_NAME : "eu-north-1"
-  DEPLOY_PACKAGE_NAME: "netcore_app${{ github.sha }}.zip"
+name: CI Pipeline
 
 on:
-  push:
-    branches: [ master ]
   pull_request:
     branches: [ master ]
 
